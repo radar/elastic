@@ -1,4 +1,5 @@
 defmodule Elastic.HTTP do
+  alias Elastic.AWS
   @moduledoc ~S"""
   Used to make raw calls to Elastic Search.
 
@@ -26,14 +27,6 @@ defmodule Elastic.HTTP do
   alias Elastic.ResponseHandler
 
   @doc """
-  Makes a request using the GET HTTP method.
-  """
-  def get(url) do
-    response = HTTPotion.get(build_url(url))
-    process_response(response)
-  end
-
-  @doc """
   Makes a request using the GET HTTP method, and can take a body.
 
   ```
@@ -41,27 +34,15 @@ defmodule Elastic.HTTP do
   ```
 
   """
-  def get(url, body: body) do
-    encoded_body = encode_body(body)
-    response = HTTPotion.get(build_url(url), body: encoded_body)
-    process_response(response)
-  end
-
-  @doc """
-  Makes a request using the POST HTTP method.
-  """
-  def post(url) do
-    response = HTTPotion.post(build_url(url))
-    process_response(response)
+  def get(url, options \\ []) do
+    request(:get, url, options)
   end
 
   @doc """
   Makes a request using the POST HTTP method, and can take a body.
   """
-  def post(url, body: body) do
-    encoded_body = encode_body(body)
-    response = HTTPotion.post(build_url(url), body: encoded_body)
-    process_response(response)
+  def post(url, options \\ []) do
+    request(:post, url, options)
   end
 
   @doc """
@@ -73,10 +54,8 @@ defmodule Elastic.HTTP do
   })
   ```
   """
-  def put(url, body: body) do
-    encoded_body = encode_body(body)
-    response = HTTPotion.put(build_url(url), body: encoded_body)
-    process_response(response)
+  def put(url, options \\ []) do
+    request(:put, url, options)
   end
 
   @doc """
@@ -86,17 +65,28 @@ defmodule Elastic.HTTP do
   Elastic.HTTP.delete("/answers/answer/1")
   ```
   """
-  def delete(url) do
-    response = HTTPotion.delete(build_url(url))
-    process_response(response)
+  def delete(url, options \\ []) do
+    request(:delete, url, options)
   end
 
   defp base_url do
-    Application.get_env(:elastic, :base_url) || "http://localhost:9200"
+    Elastic.base_url || "http://localhost:9200"
+  end
+
+  defp request(method, url, options \\ []) do
+    body = Keyword.get(options, :body, []) |> encode_body
+    options = Keyword.put(options, :body, body)
+    headers = Keyword.get(options, :headers, [])
+    url = build_url(method, url, headers, body)
+    apply(HTTPotion, method, [url, options]) |> process_response
   end
 
   defp process_response(response) do
     ResponseHandler.process(response)
+  end
+
+  defp encode_body([]) do
+    []
   end
 
   defp encode_body(body) do
@@ -104,7 +94,10 @@ defmodule Elastic.HTTP do
     encoded_body
   end
 
-  defp build_url(url) do
-    URI.merge(base_url, url)
+  defp build_url(method, url, headers, body) do
+    url = URI.merge(base_url, url)
+    if AWS.enabled?,
+      do: AWS.sign_url(method, url, headers, body),
+      else: url
   end
 end

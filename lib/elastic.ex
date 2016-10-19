@@ -17,4 +17,8 @@ defmodule Elastic do
   * `use_mix_env`: Adds `Mix.env` to an index, so that the index name used is something like `dev_answer`. Can be used in conjunction with `index_prefix` to get things like `company_dev_answer` as the index name.
 
   """
+
+  def base_url do
+    Application.get_env(:elastic, :base_url)
+  end
 end
