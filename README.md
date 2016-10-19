@@ -34,4 +34,4 @@ Documentation can be found on [hexdocs.pm](https://hexdocs.pm/elastic/Elastic.ht
 
 ## There's a bug / pull request
 
-[Create a new issue](/issues/new) or [submit a pull request](/compare) and follow the instructions.
+[Create a new issue](https://github.com/radar/elastic/issues/new) or [submit a pull request](https://github.com/radar/elastic/compare) and follow the instructions.
