@@ -39,6 +39,19 @@ defmodule Elastic.Document.API do
   The query syntax is exactly like the JSON you've come to know and love from
   using Elastic Search, except it's Elixir maps.
 
+  ## Counting
+
+  Counting works the same as searching, but instead of returning all the hits,
+  it'll return a number.
+
+  ```elixir
+  Answer.count(%{
+    query: %{
+      match: %{text: "answer"}
+    },
+  })
+  ```
+
   ## Get
 
   And you can get that answer with:
@@ -120,6 +133,11 @@ defmodule Elastic.Document.API do
       def search(query) do
         HTTP.get("#{index_name}/_search", body: query)
       end
+
+      def count(query) do
+        HTTP.get("#{index_name}/_count", body: query)
+      end
+
 
       defp into_struct(id, source) do
         item = for {key, value} <- source, into: %{},
