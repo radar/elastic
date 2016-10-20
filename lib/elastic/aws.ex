@@ -22,7 +22,7 @@ defmodule Elastic.AWS do
   defp process_headers(:delete, _), do: %{}
 
   defp process_headers(_method, headers) do
-    headers = for {k, v} <- headers,
+    for {k, v} <- headers,
       into: %{},
       do: {to_string(k), to_string(v)}
   end

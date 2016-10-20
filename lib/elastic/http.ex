@@ -73,7 +73,7 @@ defmodule Elastic.HTTP do
     Elastic.base_url || "http://localhost:9200"
   end
 
-  defp request(method, url, options \\ []) do
+  defp request(method, url, options) do
     body = Keyword.get(options, :body, []) |> encode_body
     options = Keyword.put(options, :body, body)
     headers = Keyword.get(options, :headers, [])
