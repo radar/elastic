@@ -16,6 +16,20 @@ defmodule Elastic do
   * `index_prefix`: A prefix to use for all indexes. Only used when using the Document API, or `Elastic.Index`.
   * `use_mix_env`: Adds `Mix.env` to an index, so that the index name used is something like `dev_answer`. Can be used in conjunction with `index_prefix` to get things like `company_dev_answer` as the index name.
 
+  ### AWS Configuration
+
+  If your Elastic Search store is hosted on AWS, there are configuration options for that:
+
+  ```elixir
+  config :elastic, aws: %{
+    enabled: true,
+    access_key_id: "ACCESS_KEY_ID_GOES_HERE",
+    secret_access_key: "SECRET_ACCESS_KEY_GOES_HERE",
+    region: "REGION_GOES_HERE"
+  }
+  ```
+
+  Elastic will then use the `AWSAuth` library to sign URLs for requests to this store.
   """
 
   def base_url do
