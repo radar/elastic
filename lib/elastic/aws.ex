@@ -1,4 +1,6 @@
 defmodule Elastic.AWS do
+  alias Timex.DateTime
+
   @moduledoc false
   def enabled? do
     settings[:enabled]
