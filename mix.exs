@@ -32,7 +32,7 @@ defmodule Elastic.Mixfile do
     [
       {:httpotion, "~> 3.0.2"},
       {:poison, "~> 2.0"},
-      {:aws_auth, github: "radar/aws_auth"},
+      {:aws_auth, "~> 0.5.1"},
       {:credo, "~> 0.4", only: [:dev, :test]},
       {:ex_doc, ">= 0.0.0", only: :dev}
     ]

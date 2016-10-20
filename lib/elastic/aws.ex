@@ -13,7 +13,7 @@ defmodule Elastic.AWS do
       settings.region,
       "es",
       process_headers(method, headers),
-      DateTime.utc_now |> DateTime.to_naive,
+      Timex.DateTime.now,
       body
     )
   end

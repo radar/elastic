@@ -21,12 +21,14 @@ defmodule Elastic do
   If your Elastic Search store is hosted on AWS, there are configuration options for that:
 
   ```elixir
-  config :elastic, aws: %{
-    enabled: true,
-    access_key_id: "ACCESS_KEY_ID_GOES_HERE",
-    secret_access_key: "SECRET_ACCESS_KEY_GOES_HERE",
-    region: "REGION_GOES_HERE"
-  }
+  config :elastic,
+    base_url: "https://your-amazon-es-endpoint-goes-here",
+    aws: %{
+      enabled: true,
+      access_key_id: "ACCESS_KEY_ID_GOES_HERE",
+      secret_access_key: "SECRET_ACCESS_KEY_GOES_HERE",
+      region: "REGION_GOES_HERE"
+    }
   ```
 
   Elastic will then use the `AWSAuth` library to sign URLs for requests to this store.
