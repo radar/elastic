@@ -1,5 +1,4 @@
 defmodule Elastic.AWS do
-  alias Timex.DateTime
 
   @moduledoc false
   def enabled? do
@@ -15,7 +14,7 @@ defmodule Elastic.AWS do
       settings.region,
       "es",
       process_headers(method, headers),
-      DateTime.now,
+      DateTime.utc_now |> DateTime.to_naive,
       body
     )
   end
