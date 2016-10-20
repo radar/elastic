@@ -15,7 +15,7 @@ defmodule Elastic.AWS do
       settings.region,
       "es",
       process_headers(method, headers),
-      Timex.DateTime.now,
+      DateTime.now,
       body
     )
   end
