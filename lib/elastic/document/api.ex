@@ -39,6 +39,38 @@ defmodule Elastic.Document.API do
   The query syntax is exactly like the JSON you've come to know and love from
   using Elastic Search, except it's Elixir maps.
 
+  This will return a list of `Answer` structs.
+
+  ```
+  [
+    %Answer{id: 1, text: "This is an answer"},
+    ...
+  ]
+
+  If you want the raw search result, use `raw_search` instead:
+
+  ```
+  Answer.raw_search(%{
+    query: %{
+      match: %{text: "answer"}
+    },
+  })
+  ```
+
+  This will return the raw result, without the wrapping of the structs:
+
+  ```
+  {:ok, 200,
+   [
+     %{"_id" => "1", "_index" => "answer",
+       "_source" => %{"text" => "This is an answer"}, "_type" => "answer", "_version" => 1,
+       "found" => true}
+     }
+     ...
+   ]
+  }
+  ```
+
   ## Counting
 
   Counting works the same as searching, but instead of returning all the hits,
@@ -63,7 +95,7 @@ defmodule Elastic.Document.API do
   This will return an Answer struct:
 
   ```elixir
-  %Answer{text: "This is an answer"}
+  %Answer{id: 1, text: "This is an answer"}
   ```
 
   ## Raw Get
@@ -131,13 +163,19 @@ defmodule Elastic.Document.API do
       end
 
       def search(query) do
+        {:ok, 200, %{"hits" => %{"hits" => hits}}} = raw_search(query)
+        Enum.map(hits, fn (%{"_source" => source, "_id" => id}) ->
+          into_struct(id, source)
+        end)
+      end
+
+      def raw_search(query) do
         Index.search(@es_index, query)
       end
 
       def count(query) do
         Index.count(@es_index, query)
       end
-
 
       defp into_struct(id, source) do
         item = for {key, value} <- source, into: %{},

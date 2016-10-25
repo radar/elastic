@@ -40,15 +40,28 @@ defmodule Elastic.Document.APITest do
   end
 
   @tag integration: true
-  test "can search for an answer" do
+  test "can search for a raw answer" do
     Answer.index(1, %{text: "Hello world!"})
     Elastic.Index.refresh("answer")
-    {:ok, 200, %{"hits" => %{"hits" => hits}}} = Answer.search(%{
+    {:ok, 200, %{"hits" => %{"hits" => hits}}} = Answer.raw_search(%{
       query: %{
         match: %{text: "Hello"}
       }
     })
 
     assert match?([%{"_source" => %{"text" => "Hello world!"}}], hits)
+  end
+
+  @tag integration: true
+  test "can search for an answer" do
+    Answer.index(1, %{text: "Hello world!"})
+    Elastic.Index.refresh("answer")
+    answers = Answer.search(%{
+      query: %{
+        match: %{text: "Hello"}
+      }
+    })
+
+    assert answers == [%Answer{id: "1", text: "Hello world!"}]
   end
 end
