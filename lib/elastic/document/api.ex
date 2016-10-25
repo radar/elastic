@@ -172,7 +172,11 @@ defmodule Elastic.Document.API do
       end
 
       def raw_search(query) do
-        Query.build(@es_index, query) |> Index.search
+        search_query(query) |> Index.search
+      end
+
+      def search_query(query) do
+        Query.build(@es_index, query)
       end
 
       def raw_count(query) do
