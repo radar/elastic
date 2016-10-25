@@ -138,6 +138,7 @@ defmodule Elastic.Document.API do
       alias Elastic.Document
       alias Elastic.HTTP
       alias Elastic.Index
+      alias Elastic.Query
 
       def index(id, data) do
         Document.index(@es_index, @es_type, id, data)
@@ -163,18 +164,24 @@ defmodule Elastic.Document.API do
       end
 
       def search(query) do
-        {:ok, 200, %{"hits" => %{"hits" => hits}}} = raw_search(query)
+        result = Query.build(@es_index, query) |> Index.search
+        {:ok, 200, %{"hits" => %{"hits" => hits}}} = result
         Enum.map(hits, fn (%{"_source" => source, "_id" => id}) ->
           into_struct(id, source)
         end)
       end
 
       def raw_search(query) do
-        Index.search(@es_index, query)
+        Query.build(@es_index, query) |> Index.search
+      end
+
+      def raw_count(query) do
+        Query.build(@es_index, query) |> Index.count
       end
 
       def count(query) do
-        Index.count(@es_index, query)
+        {:ok, 200, %{"count" => count}} = raw_count(query)
+        count
       end
 
       defp into_struct(id, source) do

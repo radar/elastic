@@ -17,12 +17,12 @@ defmodule Elastic.Index do
     HTTP.post("#{name(index)}/_refresh")
   end
 
-  def search(index, query) do
-    HTTP.get("#{name(index)}/_search", body: query)
+  def search(%Elastic.Query{index: index, body: body}) do
+    HTTP.get("#{name(index)}/_search", body: body)
   end
 
-  def count(index, query) do
-    HTTP.get("#{name(index)}/_count", body: query)
+  def count(%Elastic.Query{index: index, body: body}) do
+    HTTP.get("#{name(index)}/_count", body: body)
   end
 
   defp index_prefix do
