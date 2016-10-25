@@ -1,5 +1,9 @@
 # Elastic Changelog
 
+## 2.2
+
+Added `Elastic.Document.API.search_query` for better compatibility with [`scrivener_elastic`](https://github.com/radar/scrivener_elastic).
+
 ## 2.1
 
 * `Document.API.count` has now been moved to `Document.API.raw_count`. Use `raw_count` if you want to maintain the behaviour from 2.0.
