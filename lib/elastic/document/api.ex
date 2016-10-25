@@ -108,7 +108,7 @@ defmodule Elastic.Document.API do
       alias Elastic.Index
 
       def index(id, data) do
-        Document.index(index_name, @es_type, id, data)
+        Document.index(@es_index, @es_type, id, data)
       end
 
       def update(id, data), do: index(id, data)
@@ -123,19 +123,19 @@ defmodule Elastic.Document.API do
       end
 
       def delete(id) do
-        Document.delete(index_name, @es_type, id)
+        Document.delete(@es_index, @es_type, id)
       end
 
       def raw_get(id) do
-        Document.get(index_name, @es_type, id)
+        Document.get(@es_index, @es_type, id)
       end
 
       def search(query) do
-        HTTP.get("#{index_name}/_search", body: query)
+        Index.search(@es_index, query)
       end
 
       def count(query) do
-        HTTP.get("#{index_name}/_count", body: query)
+        Index.count(@es_index, query)
       end
 
 
@@ -143,10 +143,6 @@ defmodule Elastic.Document.API do
         item = for {key, value} <- source, into: %{},
           do: {String.to_atom(key), value}
         struct(__MODULE__, Map.put(item, :id, id))
-      end
-
-      defp index_name do
-        Index.name(@es_index)
       end
     end
   end
