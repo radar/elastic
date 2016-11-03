@@ -10,7 +10,11 @@ defmodule Elastic.ResponseHandler do
   end
 
   def process(%HTTPotion.ErrorResponse{message: "econnrefused"}) do
-    {:error, 0, %{"error" => "Could not connect to Elasticsearch: connection refused"}}
+    {:error, 0, %{"error" => "Could not connect to Elasticsearch: connection refused (econnrefused)"}}
+  end
+
+  def process(%HTTPotion.ErrorResponse{message: "nxdomain"}) do
+    {:error, 0, %{"error" => "Could not connect to Elasticsearch: could not resolve address (nxdomain)"}}
   end
 
   defp decode_body(body) do
