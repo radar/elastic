@@ -9,6 +9,10 @@ defmodule Elastic.ResponseHandler do
     {:ok, status_code, decode_body(body)}
   end
 
+  def process(%HTTPotion.ErrorResponse{message: "econnrefused"}) do
+    {:error, 0, %{"error" => "Could not connect to Elasticsearch: connection refused"}}
+  end
+
   defp decode_body(body) do
     {:ok, decoded_body} = Poison.decode(body)
     decoded_body

@@ -13,4 +13,9 @@ defmodule Elastic.ResponseHandlerTest do
     response = ResponseHandler.process(%{body: body, status_code: 404})
     assert {:error, 404, %{"error" => "no such index"}} == response
   end
+
+  test "handles a econnrefused" do
+    response = ResponseHandler.process(%HTTPotion.ErrorResponse{message: "econnrefused"})
+    assert {:error, 0, %{"error" => "Could not connect to Elasticsearch: connection refused"}} == response
+  end
 end
