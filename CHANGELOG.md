@@ -1,5 +1,9 @@
 # Elastic Changelog
 
+## 2.2.1
+
+Handle `econnrefused` and `nxdomain` errors gracefully.
+
 ## 2.2
 
 Added `Elastic.Document.API.search_query` for better compatibility with [`scrivener_elastic`](https://github.com/radar/scrivener_elastic).
