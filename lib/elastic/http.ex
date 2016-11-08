@@ -69,6 +69,13 @@ defmodule Elastic.HTTP do
     request(:delete, url, options)
   end
 
+  def bulk(options) do
+    headers = Keyword.get(options, :headers, [])
+    body = Keyword.get(options, :body, [])
+    url = build_url(:post, "_bulk", headers, body)
+    HTTPotion.post(url, options) |> process_response
+  end
+
   defp base_url do
     Elastic.base_url || "http://localhost:9200"
   end
