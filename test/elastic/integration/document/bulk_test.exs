@@ -13,6 +13,7 @@ defmodule Elastic.Document.BulkTest do
     assert Answer.get(2)
   end
 
+  @tag integration: true
   test "bulk creates answers without ids" do
     Elastic.Bulk.create([
       {index, "answer", nil, %{text: "hello world"}},
