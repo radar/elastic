@@ -30,6 +30,17 @@ defmodule Elastic.Document.BulkTest do
     assert Enum.count(answers) == 2
   end
 
+  @tag integration: true
+  test "bulk updates answers with ids" do
+    Answer.index(1, %{text: "this is an answer"})
+    Elastic.Bulk.update([
+      {index, "answer", 1, %{comments: 5}},
+    ])
+
+    answer = Answer.get(1)
+    assert answer == %Answer{id: "1", text: "this is an answer", comments: 5}
+  end
+
   def index do
     Elastic.Index.name("answer")
   end
