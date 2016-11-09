@@ -144,7 +144,9 @@ defmodule Elastic.Document.API do
         Document.index(@es_index, @es_type, id, data)
       end
 
-      def update(id, data), do: index(id, data)
+      def update(id, data) do
+        Document.update(@es_index, @es_type, id, data)
+      end
 
       def get(id) do
         case raw_get(id) do

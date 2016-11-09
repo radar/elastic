@@ -1,11 +1,3 @@
-defmodule Answer do
-  @es_type "answer"
-  @es_index "answer"
-  use Elastic.Document.API
-
-  defstruct [:id, :text]
-end
-
 defmodule Elastic.Document.APITest do
   use Elastic.IntegrationTestCase
 
@@ -14,6 +6,14 @@ defmodule Elastic.Document.APITest do
     Answer.index(1, %{text: "Hello world!"})
     answer = Answer.get(1)
     assert answer == %Answer{id: "1", text: "Hello world!"}
+  end
+
+  @tag integration: true
+  test "puts + updates a document in the index" do
+    Answer.index(1, %{text: "Hello world!"})
+    {:ok, 200, _} = Answer.update(1, %{comments: 5})
+    answer = Answer.get(1)
+    assert answer == %Answer{id: "1", text: "Hello world!", comments: 5}
   end
 
   @tag integration: true

@@ -5,6 +5,6 @@ defmodule Elastic.IntegrationTestCase do
     Elastic.Index.delete("answer")
     Elastic.Index.refresh("answer")
 
-    { :ok, tags }
+    {:ok, tags}
   end
 end

@@ -8,6 +8,12 @@ defmodule Elastic.Document do
     document_path(index, type, id) |> HTTP.put(body: data)
   end
 
+  def update(index, type, id, data) do
+    data = %{doc: data}
+    update_path(index, type, id)
+    |> HTTP.post(body: data)
+  end
+
   def get(index, type, id) do
     document_path(index, type, id) |> HTTP.get
   end
@@ -16,8 +22,12 @@ defmodule Elastic.Document do
     document_path(index, type, id) |> HTTP.delete
   end
 
-  def document_path(index, type, id) do
+  defp document_path(index, type, id) do
     "#{index_name(index)}/#{type}/#{id}"
+  end
+
+  def update_path(index, type, id) do
+    document_path(index, type, id) <> "/_update"
   end
 
   defp index_name(index) do
