@@ -71,7 +71,8 @@ defmodule Elastic.HTTP do
 
   def bulk(options) do
     headers = Keyword.get(options, :headers, [])
-    body = Keyword.get(options, :body, [])
+    body = Keyword.get(options, :body, "") <> "\n"
+    options = Keyword.put(options, :body, body)
     url = build_url(:post, "_bulk", headers, body)
     HTTPotion.post(url, options) |> process_response
   end

@@ -2,7 +2,7 @@
 
 ## 2.3.0
 
-* Added `Elastic.Bulk` for bulk operations. Currently only supports `create`. See documentation for more information.
+* Added `Elastic.Bulk` for bulk operations. Currently only supports `create` and `update`. See documentation for more information.
 * `Document.API.index` and `Document.API.update` are no longer interchangeable. `update` will now do a partial update to the document, rather than creating a new version of that document.
 
 ## 2.2.2

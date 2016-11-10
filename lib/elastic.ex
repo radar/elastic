@@ -3,9 +3,10 @@ defmodule Elastic do
 
   Elastic is a thin veneer over HTTPotion to help you talk to your Elastic Search stores.
 
-  Elastic provides two main ways of talking to the stores:
+  Elastic provides three main ways of talking to the stores:
 
   * `Elastic.Document.API`: Adds functions to a module to abstract away some of the mess of actions on an index.
+  * `Elastic.Bulk`: Provides functions for bulk creating or updating documents in an ElasticSearch store.
   * `Elastic.HTTP`: A very thin veneer over HTTPotion and Poison to make queries to your Elastic Search store.
 
   ## Configuration
