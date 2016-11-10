@@ -1,4 +1,6 @@
 defmodule Elastic.Bulk do
+  alias Elastic.HTTP
+
   @moduledoc ~S"""
   Used to make requests to ElasticSearch's bulk API.
 
@@ -72,6 +74,6 @@ defmodule Elastic.Bulk do
 
   defp call_bulk_api(queries) do
     queries = queries |> Enum.join("\n")
-    Elastic.HTTP.bulk(body: queries)
+    HTTP.bulk(body: queries)
   end
 end
