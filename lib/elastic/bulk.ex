@@ -45,7 +45,6 @@ defmodule Elastic.Bulk do
   def update(documents) do
     documents
     |> Enum.map(&update_document/1)
-    |> Enum.join("\n")
     |> call_bulk_api
   end
 

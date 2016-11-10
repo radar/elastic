@@ -1,5 +1,9 @@
 # Elastic Changelog
 
+## 2.3.1
+
+* Fix bug where `Elastic.Bulk.update` would throw an error.
+
 ## 2.3.0
 
 * Added `Elastic.Bulk` for bulk operations. Currently only supports `create` and `update`. See documentation for more information.
