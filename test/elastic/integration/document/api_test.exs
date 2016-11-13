@@ -64,4 +64,57 @@ defmodule Elastic.Document.APITest do
 
     assert answers == [%Answer{id: "1", text: "Hello world!"}]
   end
+
+  @tag integration: true
+  test "can search for a question with explicit index" do
+    Question.index(2, %{text: "Goodbye world?"}, "question")
+    Elastic.Index.refresh("question")
+    questions = Question.search(%{
+      query: %{
+        match: %{text: "Goodbye"}
+      }
+    },
+    "question"
+    )
+
+    assert questions == [%Question{id: "2", text: "Goodbye world?"}]
+  end
+
+  @tag integration: true
+  test "can search for a raw question with explicit index" do
+    Question.index(1, %{text: "Raw world!"}, "raw_index")
+    Elastic.Index.refresh("raw_index")
+    {:ok, 200, %{"hits" => %{"hits" => hits}}} = Question.raw_search(%{
+      query: %{
+        match: %{text: "Raw"}
+      }
+    },
+    "raw_index"
+    )
+
+    assert match?([%{"_source" => %{"text" => "Raw world!"}}], hits)
+  end
+
+  @tag integration: true
+  test "puts + gets a document from explicit index" do
+    Question.index(1, %{text: "Hello world!"}, "some_index")
+    answer = Question.get(1, "some_index")
+    assert answer == %Question{id: "1", text: "Hello world!"}
+  end
+
+  @tag integration: true
+  test "puts + updates a document in explicit index" do
+    Question.index(1, %{text: "Hello world!"}, "some_index")
+    {:ok, 200, _} = Question.update(1, %{comments: 5}, "some_index")
+    answer = Question.get(1, "some_index")
+    assert answer == %Question{id: "1", text: "Hello world!", comments: 5}
+  end
+
+  @tag integration: true
+  test "puts + deletes a document from explicit index" do
+    Question.index(1, %{text: "Hello world!"}, "some_index")
+    Question.delete(1, "some_index")
+    assert match?({:error, 404, _}, Question.raw_get(1, "some_index"))
+  end
+
 end

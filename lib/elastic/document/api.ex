@@ -15,6 +15,12 @@ defmodule Elastic.Document.API do
   end
   ```
 
+  You may also specify the index at query/insertion as the last (optional) argument to
+  all Document functions.  You will receive warnings if @es_index is undefined in
+  the using module, but you may either ignore these or specify `@es_index "N/A"` or other
+  unused value if a default index does not make sense for your collection, such as permission based
+  partitioning, or per-company partitioning in a SaaS application.
+
   ## Index
 
   Then you can index a new `Answer` by doing:
@@ -22,6 +28,15 @@ defmodule Elastic.Document.API do
   ```elixir
   Answer.index(1, %{text: "This is an answer"})
   ```
+
+  or
+
+  ```elixir
+  Answer.index(1, %{text: "This is an answer"}, "explicit_named_index")
+  ```
+
+  if not using default index behavior.  All examples below may also be
+  modified the same way if using an explicit index.
 
   ## Searching
 
@@ -140,16 +155,16 @@ defmodule Elastic.Document.API do
       alias Elastic.Index
       alias Elastic.Query
 
-      def index(id, data) do
-        Document.index(@es_index, @es_type, id, data)
+      def index(id, data, es_index \\ @es_index) do
+        Document.index(es_index, @es_type, id, data)
       end
 
-      def update(id, data) do
-        Document.update(@es_index, @es_type, id, data)
+      def update(id, data, es_index \\ @es_index) do
+        Document.update(es_index, @es_type, id, data)
       end
 
-      def get(id) do
-        case raw_get(id) do
+      def get(id, es_index \\ @es_index) do
+        case raw_get(id, es_index) do
           {:ok, 200, %{"_source" => source, "_id" => id}} ->
             into_struct(id, source)
           {:error, 404, %{"found" => false}} -> nil
@@ -157,32 +172,32 @@ defmodule Elastic.Document.API do
         end
       end
 
-      def delete(id) do
-        Document.delete(@es_index, @es_type, id)
+      def delete(id, es_index \\ @es_index) do
+        Document.delete(es_index, @es_type, id)
       end
 
-      def raw_get(id) do
-        Document.get(@es_index, @es_type, id)
+      def raw_get(id, es_index \\ @es_index) do
+        Document.get(es_index, @es_type, id)
       end
 
-      def search(query) do
-        result = Query.build(@es_index, query) |> Index.search
+      def search(query, es_index \\ @es_index) do
+        result = Query.build(es_index, query) |> Index.search
         {:ok, 200, %{"hits" => %{"hits" => hits}}} = result
         Enum.map(hits, fn (%{"_source" => source, "_id" => id}) ->
           into_struct(id, source)
         end)
       end
 
-      def raw_search(query) do
-        search_query(query) |> Index.search
+      def raw_search(query, es_index \\ @es_index) do
+        search_query(query, es_index) |> Index.search
       end
 
-      def search_query(query) do
-        Query.build(@es_index, query)
+      def search_query(query, es_index \\ @es_index) do
+        Query.build(es_index, query)
       end
 
-      def raw_count(query) do
-        Query.build(@es_index, query) |> Index.count
+      def raw_count(query, es_index \\ @es_index) do
+        Query.build(es_index, query) |> Index.count
       end
 
       def count(query) do
