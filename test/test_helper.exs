@@ -8,3 +8,10 @@ defmodule Answer do
   defstruct [:id, :text, :comments]
 end
 
+defmodule Question do
+  @es_type "question"
+  @es_index "N/A"
+  use Elastic.Document.API
+
+  defstruct [:id, :text, :comments]
+end
