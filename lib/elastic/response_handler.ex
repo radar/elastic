@@ -17,6 +17,10 @@ defmodule Elastic.ResponseHandler do
     {:error, 0, %{"error" => "Could not connect to Elasticsearch: could not resolve address (nxdomain)"}}
   end
 
+  defp decode_body("") do
+    ""
+  end
+
   defp decode_body(body) do
     {:ok, decoded_body} = Poison.decode(body)
     decoded_body

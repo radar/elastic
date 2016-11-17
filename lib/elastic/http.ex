@@ -69,6 +69,17 @@ defmodule Elastic.HTTP do
     request(:delete, url, options)
   end
 
+  @doc """
+  Makes a request using the HEAD HTTP method:
+
+  ```
+  Elastic.HTTP.head("/answers")
+  ```
+  """
+  def head(url, options \\ []) do
+    request(:head, url, options)
+  end
+
   def bulk(options) do
     headers = Keyword.get(options, :headers, [])
     body = Keyword.get(options, :body, "") <> "\n"

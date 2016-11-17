@@ -17,6 +17,11 @@ defmodule Elastic.Index do
     HTTP.post("#{name(index)}/_refresh")
   end
 
+  def exists?(index) do
+    {_, status, _} = HTTP.head(name(index))
+    status == 200
+  end
+
   def search(%Elastic.Query{index: index, body: body}) do
     HTTP.get("#{name(index)}/_search", body: body)
   end
