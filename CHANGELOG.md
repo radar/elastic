@@ -1,5 +1,10 @@
 # Elastic Changelog
 
+## 2.3.2
+
+* Added `Elastic.HTTP.head` for making `HEAD` requests.
+* Added `Elastic.Index.exists?` for checking if an index exists or not.
+
 ## 2.3.1
 
 * Fix bug where `Elastic.Bulk.update` would throw an error.

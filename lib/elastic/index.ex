@@ -17,6 +17,8 @@ defmodule Elastic.Index do
     HTTP.post("#{name(index)}/_refresh")
   end
 
+  # Checks if the specified index exists.
+  # The index name will be automatically prefixed as per this package's configuration.
   def exists?(index) do
     {_, status, _} = HTTP.head(name(index))
     status == 200
