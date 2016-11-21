@@ -61,6 +61,7 @@ defmodule Elastic.Document.API do
     %Answer{id: 1, text: "This is an answer"},
     ...
   ]
+  ```
 
   If you want the raw search result, use `raw_search` instead:
 
