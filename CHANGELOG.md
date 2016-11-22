@@ -1,5 +1,14 @@
 # Elastic Changelog
 
+## 2.3.4
+
+* Gracefully handle `connection_closed` errors from Elastic Search. These can occur, for example, when you're trying to index a document with an invalid ID: `Elastic.HTTP.post("/elastic_test/test/1 foo", body: %{test: true})`. (The ID of "1 foo" is not valid)
+* Added `index_exists?` to `Document.API` so that you can call this function on the module that uses `Document.API`, rather than rolling your own version.
+
+## 2.3.3
+
+* Fixed a tiny issue with `Document.API` documentaiton.
+
 ## 2.3.2
 
 * Added `Elastic.HTTP.head` for making `HEAD` requests.
