@@ -207,7 +207,7 @@ defmodule Elastic.Document.API do
       end
 
       def index_exists? do
-        Elastic.Index.exists?(@es_index)
+        Index.exists?(@es_index)
       end
 
       defp into_struct(id, source) do
