@@ -206,6 +206,10 @@ defmodule Elastic.Document.API do
         count
       end
 
+      def index_exists? do
+        Elastic.Index.exists?(@es_index)
+      end
+
       defp into_struct(id, source) do
         item = for {key, value} <- source, into: %{},
           do: {String.to_atom(key), value}

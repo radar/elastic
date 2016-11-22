@@ -3,6 +3,7 @@ defmodule Elastic.IntegrationTestCase do
 
   setup tags do
     Elastic.Index.delete("answer")
+    Elastic.Index.delete("existence")
     Elastic.Index.refresh("answer")
 
     {:ok, tags}

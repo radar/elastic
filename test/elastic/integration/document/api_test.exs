@@ -117,4 +117,13 @@ defmodule Elastic.Document.APITest do
     assert match?({:error, 404, _}, Question.raw_get(1, "some_index"))
   end
 
+  @tag integration: true
+  test "checks if the index exists" do
+    refute Answer.index_exists?
+
+    Answer.index(1, %{text: "Hello world!"})
+
+    assert Answer.index_exists?
+  end
+
 end
