@@ -23,4 +23,9 @@ defmodule Elastic.ResponseHandlerTest do
     response = ResponseHandler.process(%HTTPotion.ErrorResponse{message: "nxdomain"})
     assert {:error, 0, %{"error" => "Could not connect to Elasticsearch: could not resolve address (nxdomain)"}} == response
   end
+
+  test "handles a connection_closed" do
+    response = ResponseHandler.process(%HTTPotion.ErrorResponse{message: "connection_closed"})
+    assert {:error, 0, %{"error" => "Could not connect to Elasticsearch: connection closed (connection_closed)"}} == response
+  end
 end

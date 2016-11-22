@@ -17,6 +17,10 @@ defmodule Elastic.ResponseHandler do
     {:error, 0, %{"error" => "Could not connect to Elasticsearch: could not resolve address (nxdomain)"}}
   end
 
+  def process(%HTTPotion.ErrorResponse{message: "connection_closed"}) do
+    {:error, 0, %{"error" => "Could not connect to Elasticsearch: connection closed (connection_closed)"}}
+  end
+
   defp decode_body("") do
     ""
   end
