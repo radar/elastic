@@ -1,5 +1,9 @@
 # Elastic Changelog
 
+## 2.3.5
+
+* Added missing documentation for `Elastic.Index`
+
 ## 2.3.4
 
 * Gracefully handle `connection_closed` errors from Elastic Search. These can occur, for example, when you're trying to index a document with an invalid ID: `Elastic.HTTP.post("/elastic_test/test/1 foo", body: %{test: true})`. (The ID of "1 foo" is not valid)

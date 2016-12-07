@@ -1,6 +1,6 @@
 defmodule Elastic.Mixfile do
   use Mix.Project
-  @version "2.3.4"
+  @version "2.3.5"
 
   def project do
     [app: :elastic,
