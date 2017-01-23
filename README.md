@@ -1,7 +1,7 @@
 # Elastic
 
-![Version](https://img.shields.io/hexpm/v/elastic.svg)
-![Travis Build](https://img.shields.io/travis/radar/elastic.svg)
+[![Version](https://img.shields.io/hexpm/v/elastic.svg)](https://hex.pm/packages/elastic)
+[![Travis Build](https://img.shields.io/travis/radar/elastic.svg)](https://travis-ci.org/radar/elastic)
 
 _You Know, for (Elastic) Search._
 
