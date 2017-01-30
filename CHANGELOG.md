@@ -1,5 +1,9 @@
 # Elastic Changelog
 
+## dev
+
+* Added `Elastic.Index.open/1` and `Elastic.Index.close/1`
+
 ## 2.3.5
 
 * Added missing documentation for `Elastic.Index`

@@ -1,8 +1,11 @@
 defmodule Elastic.Index do
   alias Elastic.HTTP
+  @moduledoc ~S"""
+  Collection of functions to work with indices.
+  """
 
   @doc """
-  Helper method for getting the name of an index combined with the
+  Helper function for getting the name of an index combined with the
   `index_prefix` and `mix_env` configuration.
   """
   def name(index) do
@@ -43,6 +46,20 @@ defmodule Elastic.Index do
   def exists?(index) do
     {_, status, _} = HTTP.head(name(index))
     status == 200
+  end
+
+  @doc """
+  Opens the specified index.
+  """
+  def open(index) do
+    HTTP.post("#{name(index)}/_open")
+  end
+
+  @doc """
+  Closes the specified index.
+  """
+  def close(index) do
+    HTTP.post("#{name(index)}/_close")
   end
 
   @doc false
