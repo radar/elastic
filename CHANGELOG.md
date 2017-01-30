@@ -1,6 +1,6 @@
 # Elastic Changelog
 
-## dev
+## 2.4.0
 
 * Added `Elastic.Index.open/1` and `Elastic.Index.close/1`
 
