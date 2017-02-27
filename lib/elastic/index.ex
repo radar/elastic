@@ -69,8 +69,6 @@ defmodule Elastic.Index do
     HTTP.get("#{name(index)}/_search", body: body)
   end
 
-
-
   @doc false
   def count(%Query{index: index, body: body}) do
     HTTP.get("#{name(index)}/_count", body: body)
