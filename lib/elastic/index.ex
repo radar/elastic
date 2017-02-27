@@ -1,5 +1,7 @@
 defmodule Elastic.Index do
   alias Elastic.HTTP
+  alias Elastic.Query
+
   @moduledoc ~S"""
   Collection of functions to work with indices.
   """
@@ -63,12 +65,14 @@ defmodule Elastic.Index do
   end
 
   @doc false
-  def search(%Elastic.Query{index: index, body: body}) do
+  def search(%Query{index: index, body: body}) do
     HTTP.get("#{name(index)}/_search", body: body)
   end
 
+
+
   @doc false
-  def count(%Elastic.Query{index: index, body: body}) do
+  def count(%Query{index: index, body: body}) do
     HTTP.get("#{name(index)}/_count", body: body)
   end
 
