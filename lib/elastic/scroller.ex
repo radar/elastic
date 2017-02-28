@@ -22,7 +22,7 @@ defmodule Elastic.Scroller do
     })
 
     case scroll do
-      {:ok, 200, %{"_scroll_id" => scroll_id, "hits" => %{"hits" => hits}} = result} ->
+      {:ok, 200, %{"_scroll_id" => scroll_id, "hits" => %{"hits" => hits}}} ->
         {:ok, Map.merge(state, %{scroll_id: scroll_id, hits: hits})}
       {:error, _status, error} ->
         {:stop, inspect(error)}
