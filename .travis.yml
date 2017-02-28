@@ -13,3 +13,5 @@ script:
   - mix credo --strict
 services:
   - elasticsearch
+after_script:
+  - curl localhost:9200/_cat/indices?v
