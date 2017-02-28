@@ -35,3 +35,9 @@ Documentation can be found on [hexdocs.pm](https://hexdocs.pm/elastic/Elastic.ht
 ## There's a bug / pull request
 
 [Create a new issue](https://github.com/radar/elastic/issues/new) or [submit a pull request](https://github.com/radar/elastic/compare) and follow the instructions.
+
+## ElasticSearch version
+
+This package is designed to work with ElasticSearch 2.4.x, since that's the version I am personally using.
+
+I think if there are API compatibility issues with ElasticSearch 5.x then we should look at creating a branch for 5.x compatibility. Please submit a pull request to kick off this process.
