@@ -4,8 +4,8 @@ defmodule Elastic.Document.BulkTest do
   @tag integration: true
   test "bulk creates answers with ids" do
     Elastic.Bulk.create([
-      {index, "answer", 1, %{text: "this is an answer"}},
-      {index, "answer", 2, %{text: "and this is one too"}}
+      {index(), "answer", 1, %{text: "this is an answer"}},
+      {index(), "answer", 2, %{text: "and this is one too"}}
     ])
 
     answer = Answer.get(1)
@@ -16,8 +16,8 @@ defmodule Elastic.Document.BulkTest do
   @tag integration: true
   test "bulk creates answers without ids" do
     Elastic.Bulk.create([
-      {index, "answer", nil, %{text: "hello world"}},
-      {index, "answer", nil, %{text: "world hello"}}
+      {index(), "answer", nil, %{text: "hello world"}},
+      {index(), "answer", nil, %{text: "world hello"}}
     ])
 
     Elastic.Index.refresh("answer")
@@ -35,7 +35,7 @@ defmodule Elastic.Document.BulkTest do
   test "bulk updates answers with ids" do
     Answer.index(1, %{text: "this is an answer"})
     Elastic.Bulk.update([
-      {index, "answer", 1, %{comments: 5}},
+      {index(), "answer", 1, %{comments: 5}},
     ])
 
     answer = Answer.get(1)
