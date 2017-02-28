@@ -17,6 +17,24 @@ defmodule Elastic.Index do
   end
 
   @doc """
+  Creates the specified index.
+  If you've configured `index_prefix` and `use_mix_env` for Elastic, it will use those.
+
+  ## Examples
+
+  ```elixir
+  # With index_prefix set to 'elastic'
+  # And with `use_mix_env` set to `true`
+  # This will create the `elastic_dev_answer` index
+  Elastic.Index.create("answer")
+  ```
+  """
+
+  def create(index) do
+    HTTP.post(name(index))
+  end
+
+  @doc """
   Deletes the specified index.
   If you've configured `index_prefix` and `use_mix_env` for Elastic, it will use those.
 
