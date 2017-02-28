@@ -52,6 +52,8 @@ defmodule Elastic.Index do
     HTTP.delete(name(index))
   end
 
+
+
   @doc """
   Refreshes the specified index by issuing a [refresh HTTP call](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-refresh.html).
   """

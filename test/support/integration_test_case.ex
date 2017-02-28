@@ -6,6 +6,9 @@ defmodule Elastic.IntegrationTestCase do
     Elastic.Index.delete("existence")
     Elastic.Index.refresh("answer")
 
+    Elastic.Index.create("answer")
+    Elastic.Index.create("existence")
+
     {:ok, tags}
   end
 end
