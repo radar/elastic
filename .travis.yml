@@ -4,7 +4,9 @@ elixir:
 before_install:
   # Force Travis to use Elastic Search 2.4.0
   # By default it uses Elastic Search 1.4.0
-  - curl -O https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch/2.4.0/elasticsearch-2.4.0.deb && sudo dpkg -i --force-confnew elasticsearch-2.4.0.deb && sudo service elasticsearch restart
+  - curl -O https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch/2.4.0/elasticsearch-2.4.0.deb
+  - sudo dpkg -i --force-confnew elasticsearch-2.4.0.deb
+  - sudo service elasticsearch restart
 before_script:
   - sleep 10
   - curl localhost:9200
