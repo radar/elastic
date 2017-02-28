@@ -1,4 +1,5 @@
 defmodule Elastic.Scroller do
+  alias Elastic.Index
   alias Elastic.Scroll
 
   use GenServer
@@ -24,7 +25,6 @@ defmodule Elastic.Scroller do
       {:ok, 200, %{"_scroll_id" => scroll_id, "hits" => %{"hits" => hits}} = result} ->
         {:ok, Map.merge(state, %{scroll_id: scroll_id, hits: hits})}
       {:error, _status, error} ->
-        # TODO: handle error case better
         {:stop, inspect(error)}
     end
   end
@@ -75,10 +75,10 @@ defmodule Elastic.Scroller do
 
     case scroll |> Scroll.next do
       {:ok, 200, %{
-      "_scroll_id" => scroll_id,
+      "_scroll_id" => id,
       "hits" => %{"hits" => hits}}} ->
-        state = state |> Map.merge(%{scroll_id: scroll_id, hits: hits})
-        {:reply, {:ok, scroll_id}, state}
+        state = state |> Map.merge(%{scroll_id: id, hits: hits})
+        {:reply, {:ok, id}, state}
       {:error, 404, error} ->
         {:reply, {:error, :search_context_not_found, inspect(error)}, state}
       {:error, _, error} ->
@@ -95,7 +95,7 @@ defmodule Elastic.Scroller do
   end
 
   def handle_call(:index, _from, state = %{index: index}) do
-    {:reply, Elastic.Index.name(index), state}
+    {:reply, Index.name(index), state}
   end
 
   def handle_call(:body, _from, state = %{body: body}) do
@@ -107,7 +107,7 @@ defmodule Elastic.Scroller do
   end
 
   def handle_call(:clear, _from, state = %{scroll_id: scroll_id}) do
-    response = Elastic.Scroll.clear([scroll_id])
+    response = Scroll.clear([scroll_id])
     {:reply, response, state}
   end
 end
