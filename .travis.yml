@@ -6,7 +6,9 @@ before_install:
   # By default it uses Elastic Search 1.4.0
   - curl -O https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch/2.4.0/elasticsearch-2.4.0.deb
   - sudo dpkg -i --force-confnew elasticsearch-2.4.0.deb
-  - sudo service elasticsearch restart
+  - sudo service elasticsearch stop
+  - sudo service elasticsearch start
+  - cat /etc/init.d/elasticsearch
 before_script:
   - sleep 10
   - curl localhost:9200
