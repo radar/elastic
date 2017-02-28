@@ -11,7 +11,7 @@ defmodule Elastic.Index do
   `index_prefix` and `mix_env` configuration.
   """
   def name(index) do
-    [index_prefix, mix_env, index]
+    [index_prefix(), mix_env(), index]
     |> Enum.reject(&(&1 == nil))
     |> Enum.join("_")
   end
