@@ -46,7 +46,7 @@ defmodule Elastic.Scroll do
     required(:scroll_id) => String.t,
     required(:keepalive) => String.t
   }) :: {:ok, 200, map()} | {:error, 404, map()} | {:error, pos_integer(), map()}
-  def next(%{body: body, scroll_id: scroll_id, keepalive: keepalive}) do
+  def next(%{scroll_id: scroll_id, keepalive: keepalive}) do
     HTTP.get(@scroll_endpoint, body: %{scroll_id: scroll_id, scroll: keepalive})
   end
 
