@@ -8,15 +8,13 @@ before_install:
   - sudo dpkg -r elasticsearch
   - curl -O https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch/2.4.0/elasticsearch-2.4.0.deb
   - sudo dpkg -i --force-confnew elasticsearch-2.4.0.deb
-  - sudo service elasticsearch stop
   - sudo service elasticsearch start
 before_script:
   - sleep 10
+  # Outputs info about ES, including version number. Useful for debugging.
   - curl localhost:9200
 script:
   - mix test --include integration
   - mix credo --strict
 services:
   - elasticsearch
-after_script:
-  - curl localhost:9200/_cat/indices?v
