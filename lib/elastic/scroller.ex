@@ -34,14 +34,13 @@ defmodule Elastic.Scroller do
   For usage information refer to the documentation at the top of this module.
   """
 
-  @spec start_link(map())
-    :: %{
+  @spec start_link(%{
           required(:index) => String.t,
           optional(:body) => map(),
           optional(:size) => pos_integer(),
           optional(:keepalive) => String.t,
-       }
-    :: {:ok, pid()}
+       })
+  :: {:ok, pid()}
   def start_link(opts = %{index: index}) do
     opts = opts
     |> Map.put_new(:body, %{})
@@ -51,14 +50,13 @@ defmodule Elastic.Scroller do
     GenServer.start_link(__MODULE__, opts)
   end
 
-  @spec init(map())
-    :: %{
+  @spec init(%{
           required(:index) => String.t,
           required(:body) => map(),
           required(:size) => pos_integer(),
           required(:keepalive) => String.t,
-        }
-    :: {:ok, pid()} | {:stop, String.t}
+        })
+  :: {:ok, pid()} | {:stop, String.t}
   def init(state = %{index: index, body: body, size: size, keepalive: keepalive}) do
     scroll = Scroll.start(%{
       index: index,
@@ -82,6 +80,8 @@ defmodule Elastic.Scroller do
   Elastic.Scroller.results(pid)
   ```
   """
+  @spec results(pid())
+    :: [map()]
   def results(pid) do
     GenServer.call(pid, :results)
   end
@@ -95,6 +95,11 @@ defmodule Elastic.Scroller do
   Elastic.Scroller.next_page(pid)
   ```
   """
+
+  @spec next_page(pid())
+    :: {:ok, String.t}
+       | {:error, :search_context_not_found, map()}
+       | {:error, String.t}
   def next_page(pid) do
     GenServer.call(pid, :next_page)
   end
@@ -148,7 +153,7 @@ defmodule Elastic.Scroller do
         state = state |> Map.merge(%{scroll_id: id, hits: hits})
         {:reply, {:ok, id}, state}
       {:error, 404, error} ->
-        {:reply, {:error, :search_context_not_found, inspect(error)}, state}
+        {:reply, {:error, :search_context_not_found, error}, state}
       {:error, _, error} ->
         {:reply, {:error, inspect(error)}, state}
     end
