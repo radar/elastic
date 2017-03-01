@@ -1,5 +1,9 @@
 # Elastic Changelog
 
+## 2.5.0
+
+* Added `Elastic.Scroller` for Scroll API support.
+
 ## 2.4.0
 
 * Added `Elastic.Index.open/1` and `Elastic.Index.close/1`
