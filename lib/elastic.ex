@@ -3,12 +3,14 @@ defmodule Elastic do
 
   Elastic is a thin veneer over HTTPotion to help you talk to your Elastic Search stores.
 
-  Elastic provides four main ways of talking to the stores:
+  Elastic provides five main ways of talking to the stores:
 
   * `Elastic.Document.API`: Adds functions to a module to abstract away some of the mess of actions on an index.
-  * `Elastic.Bulk`: Provides functions for bulk creating or updating documents in an ElasticSearch store.
   * `Elastic.Index`: Functions for working with indexes.
-  * `Elastic.HTTP`: A very thin veneer over HTTPotion and Poison to make queries to your Elastic Search store.
+  * `Elastic.Bulk`: Provides functions for bulk creating or updating documents in an ElasticSearch store.
+  * `Elastic.Scroller`: A server which works with Elastic Search's [Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/2.4/search-request-scroll.html).
+  * `Elastic.HTTP`: A very thin veneer / low-level API over HTTPotion and Poison to make queries to your Elastic Search store.
+
 
   ## Configuration
 

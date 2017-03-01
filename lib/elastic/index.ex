@@ -1,5 +1,7 @@
 defmodule Elastic.Index do
   alias Elastic.HTTP
+  alias Elastic.Query
+
   @moduledoc ~S"""
   Collection of functions to work with indices.
   """
@@ -9,9 +11,27 @@ defmodule Elastic.Index do
   `index_prefix` and `mix_env` configuration.
   """
   def name(index) do
-    [index_prefix, mix_env, index]
+    [index_prefix(), mix_env(), index]
     |> Enum.reject(&(&1 == nil))
     |> Enum.join("_")
+  end
+
+  @doc """
+  Creates the specified index.
+  If you've configured `index_prefix` and `use_mix_env` for Elastic, it will use those.
+
+  ## Examples
+
+  ```elixir
+  # With index_prefix set to 'elastic'
+  # And with `use_mix_env` set to `true`
+  # This will create the `elastic_dev_answer` index
+  Elastic.Index.create("answer")
+  ```
+  """
+
+  def create(index) do
+    HTTP.post(name(index))
   end
 
   @doc """
@@ -31,6 +51,8 @@ defmodule Elastic.Index do
   def delete(index) do
     HTTP.delete(name(index))
   end
+
+
 
   @doc """
   Refreshes the specified index by issuing a [refresh HTTP call](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-refresh.html).
@@ -63,12 +85,12 @@ defmodule Elastic.Index do
   end
 
   @doc false
-  def search(%Elastic.Query{index: index, body: body}) do
+  def search(%Query{index: index, body: body}) do
     HTTP.get("#{name(index)}/_search", body: body)
   end
 
   @doc false
-  def count(%Elastic.Query{index: index, body: body}) do
+  def count(%Query{index: index, body: body}) do
     HTTP.get("#{name(index)}/_count", body: body)
   end
 

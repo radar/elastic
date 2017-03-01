@@ -9,7 +9,7 @@ defmodule Elastic.Mixfile do
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      elixirc_paths: elixirc_paths(Mix.env),
-     package: package,
+     package: package(),
      # Docs
      name: "Elastic",
      docs: [
@@ -31,7 +31,7 @@ defmodule Elastic.Mixfile do
   defp deps do
     [
       {:httpotion, "~> 3.0.2"},
-      {:poison, "~> 2.0"},
+      {:poison, "~> 3.0"},
       {:aws_auth, "~> 0.6.1"},
       {:credo, "~> 0.4", only: [:dev, :test]},
       {:ex_doc, ">= 0.0.0", only: :dev}

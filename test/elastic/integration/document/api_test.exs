@@ -1,4 +1,5 @@
 defmodule Elastic.Document.APITest do
+  alias Elastic.Index
   use Elastic.IntegrationTestCase
 
   @tag integration: true
@@ -119,6 +120,7 @@ defmodule Elastic.Document.APITest do
 
   @tag integration: true
   test "checks if the index exists" do
+    Index.delete("answer")
     refute Answer.index_exists?
 
     Answer.index(1, %{text: "Hello world!"})

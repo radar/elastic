@@ -2,16 +2,16 @@ defmodule Elastic.AWS do
 
   @moduledoc false
   def enabled? do
-    settings[:enabled]
+    settings()[:enabled]
   end
 
   def sign_url(method, url, headers, body) do
     AWSAuth.sign_url(
-      settings.access_key_id,
-      settings.secret_access_key,
+      settings().access_key_id,
+      settings().secret_access_key,
       to_string(method),
       url,
-      settings.region,
+      settings().region,
       "es",
       process_headers(method, headers),
       DateTime.utc_now |> DateTime.to_naive,

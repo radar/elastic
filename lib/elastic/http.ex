@@ -114,7 +114,7 @@ defmodule Elastic.HTTP do
   end
 
   defp build_url(method, url, headers, body) do
-    url = URI.merge(base_url, url)
+    url = URI.merge(base_url(), url)
     if AWS.enabled?,
       do: AWS.sign_url(method, url, headers, body),
       else: url
