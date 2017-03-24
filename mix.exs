@@ -31,7 +31,7 @@ defmodule Elastic.Mixfile do
   defp deps do
     [
       {:httpotion, "~> 3.0.2"},
-      {:poison, "~> 3.0"},
+      {:poison, "~> 2.2"},
       {:aws_auth, "~> 0.6.1"},
       {:credo, "~> 0.4", only: [:dev, :test]},
       {:ex_doc, ">= 0.0.0", only: :dev}
