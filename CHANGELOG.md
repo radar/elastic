@@ -1,5 +1,9 @@
 # Elastic Changelog
 
+## 2.6.0
+
+* Increased default `Elastic.HTTP` timeout from 5 seconds to 30 seconds. This change was made because sufficiently large `bulk_create` queries may cause Elastic Search to take longer than 5 seconds to process them. If you're still seeing `bulk_create` queries timing out, consider splitting them into smaller queries.
+
 ## 2.5.0
 
 * Added `Elastic.Scroller` for Scroll API support.
