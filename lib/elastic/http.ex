@@ -96,7 +96,7 @@ defmodule Elastic.HTTP do
     body = Keyword.get(options, :body, []) |> encode_body
     options = options
     |> Keyword.put(:body, body)
-    |> Keyword.put(:timeout, 30000)
+    |> Keyword.put(:timeout, 30_000)
 
     headers = Keyword.get(options, :headers, [])
     url = build_url(method, url, headers, body)
