@@ -94,7 +94,10 @@ defmodule Elastic.HTTP do
 
   defp request(method, url, options) do
     body = Keyword.get(options, :body, []) |> encode_body
-    options = Keyword.put(options, :body, body)
+    options = options
+    |> Keyword.put(:body, body)
+    |> Keyword.put(:timeout, 30000)
+
     headers = Keyword.get(options, :headers, [])
     url = build_url(method, url, headers, body)
     apply(HTTPotion, method, [url, options]) |> process_response
