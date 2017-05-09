@@ -32,12 +32,22 @@ end
 
 Documentation can be found on [hexdocs.pm](https://hexdocs.pm/elastic/Elastic.html)
 
-## There's a bug / pull request
+## There's a bug / I have a feature request
 
-[Create a new issue](https://github.com/radar/elastic/issues/new) or [submit a pull request](https://github.com/radar/elastic/compare) and follow the instructions.
+If you've found a bug, please [create a new issue](https://github.com/radar/elastic/issues/new) or [submit a pull request](https://github.com/radar/elastic/compare) to fix that bug.
+
+If you've got a feature request, then please submit a pull request which adds the functionality you want.
 
 ## ElasticSearch version
 
 This package is designed to work with ElasticSearch 2.4.x, since that's the version I am personally using.
 
 I think if there are API compatibility issues with ElasticSearch 5.x then we should look at creating a branch for 5.x compatibility. Please submit a pull request to kick off this process.
+
+## Elastic / Elastix / Tirexs
+
+There's a similar package called [Elastix](https://github.com/werbitzky/elastix), which provides similar functionality. I only found out about this package _after_ I wrote Elastic and was using it in production; after first trialling [tirexs](https://github.com/Zatvobor/tirexs) -- and not finding its code very easy to understand.
+
+It looks like the creator of Elastix and I have similar design ideals, so it really does come down to personal choice when deciding which library to use. I think Elastic has [better documentation](https://hexdocs.pm/elastic/). Elastix has a Mapping API, but Elastic has a Scrolling API.
+
+Choose your own adventure ;)
