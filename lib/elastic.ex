@@ -11,7 +11,6 @@ defmodule Elastic do
   * `Elastic.Scroller`: A server which works with Elastic Search's [Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/2.4/search-request-scroll.html).
   * `Elastic.HTTP`: A very thin veneer / low-level API over HTTPotion and Poison to make queries to your Elastic Search store.
 
-
   ## Configuration
 
   You can configure the way Elastic behaves by using the following configuration options:
