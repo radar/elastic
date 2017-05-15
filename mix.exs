@@ -1,6 +1,6 @@
 defmodule Elastic.Mixfile do
   use Mix.Project
-  @version "2.5.0"
+  @version "2.6.1"
 
   def project do
     [app: :elastic,
@@ -31,7 +31,7 @@ defmodule Elastic.Mixfile do
   defp deps do
     [
       {:httpotion, "~> 3.0.2"},
-      {:poison, "~> 2.2"},
+      {:poison, "~> 2.2 or ~> 3.0"},
       {:aws_auth, "~> 0.6.1"},
       {:credo, "~> 0.4", only: [:dev, :test]},
       {:ex_doc, ">= 0.0.0", only: :dev}

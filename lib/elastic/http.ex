@@ -99,8 +99,10 @@ defmodule Elastic.HTTP do
 
     headers = build_auth_header(method, url, headers, body)
 
-    options = Keyword.put(options, :headers, headers)
-    options = Keyword.put(options, :body, body)
+    options = options
+    |> Keyword.put(:headers, headers)
+    |> Keyword.put(:body, body)
+    |> Keyword.put(:timeout, 30_000)
 
     apply(HTTPotion, method, [url, options]) |> process_response
   end

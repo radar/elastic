@@ -4,7 +4,6 @@ defmodule Elastic.Bulk do
   @moduledoc ~S"""
   Used to make requests to ElasticSearch's bulk API.
 
-
   Both `create` and `update` take a list of tuples
 
   The order of elements in each tuple is this:
