@@ -31,7 +31,27 @@ defmodule Elastic.Index do
   """
 
   def create(index) do
-    HTTP.post(name(index))
+    HTTP.put(name(index))
+  end
+
+  @doc """
+  Creates the specified index with optional configuration parameters like settings,
+  mappings, aliases (see the ES Indices API documentation for information on what
+  you can pass).
+  If you've configured `index_prefix` and `use_mix_env` for Elastic, it will use those.
+
+  ## Examples
+
+  ```elixir
+  # With index_prefix set to 'elastic'
+  # And with `use_mix_env` set to `true`
+  # This will create the `elastic_dev_answer` index
+  Elastic.Index.create("answer". %{settings: {number_of_shards: 2}})
+  ```
+  """
+
+  def create(index, parameters) do
+    HTTP.put(name(index), body: parameters)
   end
 
   @doc """

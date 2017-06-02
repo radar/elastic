@@ -84,7 +84,7 @@ defmodule Elastic.HTTP do
     headers = Keyword.get(options, :headers, [])
     body = Keyword.get(options, :body, "") <> "\n"
     options = Keyword.put(options, :body, body)
-    url = build_url(:post, "_bulk", headers, body)
+    url = URI.merge(base_url(), "_bulk")
     HTTPotion.post(url, options) |> process_response
   end
 
@@ -94,12 +94,16 @@ defmodule Elastic.HTTP do
 
   defp request(method, url, options) do
     body = Keyword.get(options, :body, []) |> encode_body
+    headers = Keyword.get(options, :headers, [])
+    url = URI.merge(base_url(), url)
+
+    headers = build_auth_header(method, url, headers, body)
+
     options = options
+    |> Keyword.put(:headers, headers)
     |> Keyword.put(:body, body)
     |> Keyword.put(:timeout, 30_000)
 
-    headers = Keyword.get(options, :headers, [])
-    url = build_url(method, url, headers, body)
     apply(HTTPotion, method, [url, options]) |> process_response
   end
 
@@ -116,10 +120,9 @@ defmodule Elastic.HTTP do
     encoded_body
   end
 
-  defp build_url(method, url, headers, body) do
-    url = URI.merge(base_url(), url)
+  defp build_auth_header(method, url, headers, body) do
     if AWS.enabled?,
-      do: AWS.sign_url(method, url, headers, body),
-      else: url
+      do: AWS.sign_authorization_headers(method, url, headers, body),
+      else: headers
   end
 end
