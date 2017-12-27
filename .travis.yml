@@ -3,13 +3,70 @@ elixir:
   - 1.3.3
   - 1.4.0
 sudo: required
+env:
+  matrix:
+  - ES_VERSION=1.0.0
+  - ES_VERSION=1.4.0
+  - ES_VERSION=1.7.2
+  - ES_VERSION=2.0.0
+  - ES_VERSION=2.1.0
+  - ES_VERSION=2.2.0
+  - ES_VERSION=2.3.0
+  - ES_VERSION=5.0.0
+  - ES_VERSION=5.3.0
+  - ES_VERSION=5.4.0
+  - ES_VERSION=5.5.0
+
 before_install:
-  # Force Travis to use Elastic Search 2.4.0
-  # By default it uses Elastic Search 1.4.0
-  - sudo dpkg -r elasticsearch
-  - curl -O https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch/2.4.0/elasticsearch-2.4.0.deb
-  - sudo dpkg -i --force-confnew elasticsearch-2.4.0.deb
-  - sudo service elasticsearch start
+  - case "$ES_VERSION" in
+    "") ;;
+
+    "2.0.0")
+      export ES_VERSION=2.0.0 ;
+      curl -O https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch/$ES_VERSION/elasticsearch-$ES_VERSION.deb && sudo dpkg -i --force-confnew elasticsearch-$ES_VERSION.deb && sudo service elasticsearch start
+      ;;
+
+    "2.1.0")
+      export ES_VERSION=2.1.0 ;
+      curl -O https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch/$ES_VERSION/elasticsearch-$ES_VERSION.deb && sudo dpkg -i --force-confnew elasticsearch-$ES_VERSION.deb && sudo service elasticsearch start
+      ;;
+
+    "2.2.0")
+      export ES_VERSION=2.2.0 ;
+      curl -O https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch/$ES_VERSION/elasticsearch-$ES_VERSION.deb && sudo dpkg -i --force-confnew elasticsearch-$ES_VERSION.deb && sudo service elasticsearch start
+      ;;
+
+    "2.3.0")
+      export ES_VERSION=2.3.0 ;
+      curl -O https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch/$ES_VERSION/elasticsearch-$ES_VERSION.deb && sudo dpkg -i --force-confnew elasticsearch-$ES_VERSION.deb && sudo service elasticsearch start
+      ;;
+
+    "5.0.0")
+      export ES_VERSION=5.0.0 ;
+      curl -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-$ES_VERSION.deb && sudo dpkg -i --force-confnew elasticsearch-$ES_VERSION.deb && sudo service elasticsearch start
+      ;;
+
+    "5.3.0")
+      export ES_VERSION=5.3.0 ;
+      curl -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-$ES_VERSION.deb && sudo dpkg -i --force-confnew elasticsearch-$ES_VERSION.deb && sudo service elasticsearch start
+      ;;
+    
+    "5.4.0")
+      export ES_VERSION=5.4.0 ;
+      curl -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-$ES_VERSION.deb && sudo dpkg -i --force-confnew elasticsearch-$ES_VERSION.deb && sudo service elasticsearch start
+      ;;
+
+    "5.5.0")
+      export ES_VERSION=5.5.0 ;
+      curl -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-$ES_VERSION.deb && sudo dpkg -i --force-confnew elasticsearch-$ES_VERSION.deb && sudo service elasticsearch start
+      ;;
+      
+    "6.1.1")
+      export ES_VERSION=6.1.1 ;
+      curl -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-$ES_VERSION.deb && sudo dpkg -i --force-confnew elasticsearch-$ES_VERSION.deb && sudo service elasticsearch start
+      ;;
+      
+   esac
 before_script:
   - sleep 10
   # Outputs info about ES, including version number. Useful for debugging.
@@ -19,3 +76,4 @@ script:
   - mix credo --strict
 services:
   - elasticsearch
+
