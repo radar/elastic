@@ -108,7 +108,7 @@ defmodule Elastic.HTTP do
   defp add_content_type_header(options) do
     headers = Keyword.get(options, :headers, Keyword.new)
     headers = Keyword.put(headers, :"Content-Type", "application/json")
-    options = Keyword.put(options, :headers, headers)
+    Keyword.put(options, :headers, headers)
   end
 
   defp process_response(response) do
