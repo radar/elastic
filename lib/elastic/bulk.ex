@@ -4,13 +4,13 @@ defmodule Elastic.Bulk do
   @moduledoc ~S"""
   Used to make requests to ElasticSearch's bulk API.
 
-  Both `create` and `update` take a list of tuples
+  All of `index`, `create` and `update` take a list of tuples.
 
   The order of elements in each tuple is this:
 
   * Index
   * Type
-  * ID
+  * ID (not required for `index` bulk action)
   * Data
 
   Here's how to use `create`:
@@ -23,9 +23,22 @@ defmodule Elastic.Bulk do
     )
   ```
 
-  It's worth noting here that you can choose to pass `nil` as the ID in these create
+  It's worth noting here that you can choose to pass `nil` as the ID in these index
   requests; ElasticSearch will automatically generate an ID for you.
+
+  For `create` requests, an ID _must_ be provided.
   """
+
+  @doc """
+    Makes bulk index requests to ElasticSearch.
+
+    For more information see documentation on `Elastic.Bulk`.
+  """
+  def index(documents) do
+    documents
+    |> Enum.map(&(index_or_create_document(&1, :index)))
+    |> call_bulk_api
+  end
 
   @doc """
     Makes bulk create requests to ElasticSearch.
@@ -34,7 +47,7 @@ defmodule Elastic.Bulk do
   """
   def create(documents) do
     documents
-    |> Enum.map(&create_document/1)
+    |> Enum.map(&(index_or_create_document(&1, :create)))
     |> call_bulk_api
   end
 
@@ -49,9 +62,9 @@ defmodule Elastic.Bulk do
     |> call_bulk_api
   end
 
-  defp create_document({index, type, id, document}) do
+  defp index_or_create_document({index, type, id, document}, action) do
     [
-      Poison.encode!(%{create: identifier(index, type, id)}),
+      Poison.encode!(%{action => identifier(index, type, id)}),
       Poison.encode!(document)
     ] |> Enum.join("\n")
   end
@@ -59,9 +72,12 @@ defmodule Elastic.Bulk do
   defp update_document({index, type, id, document}) do
     [
       Poison.encode!(%{update: identifier(index, type, id)}),
+      # Note that the API here is slightly different to index_or_create_document/2.
       Poison.encode!(%{doc: document})
     ] |> Enum.join("\n")
   end
+
+
 
   defp identifier(index, type, nil) do
     %{_index: index, _type: type}

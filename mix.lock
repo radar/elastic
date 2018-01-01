@@ -1,4 +1,4 @@
-%{"aws_auth": {:hex, :aws_auth, "0.6.2", "87dbf384fce71743d65cf93e0397bbd43a1d8270f28f6838f34ff60c956d0f8c", [:mix], [], "hexpm"},
+%{"aws_auth": {:hex, :aws_auth, "0.6.4", "4ecd73cbc3c0ed169e07a3a5032a93483333bb93deab6212268f21c28d3ccc49", [:mix], [], "hexpm"},
   "bunt": {:hex, :bunt, "0.2.0", "951c6e801e8b1d2cbe58ebbd3e616a869061ddadcc4863d0a2182541acae9a38", [:mix], [], "hexpm"},
   "certifi": {:hex, :certifi, "0.4.0", "a7966efb868b179023618d29a407548f70c52466bf1849b9e8ebd0e34b7ea11f", [:rebar3], []},
   "combine": {:hex, :combine, "0.9.2", "cd3c8721f378ebe032487d8a4fa2ced3181a456a3c21b16464da8c46904bb552", [:mix], []},
