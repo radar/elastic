@@ -31,7 +31,7 @@ defmodule Elastic.Index do
   """
 
   def create(index) do
-    HTTP.post(name(index))
+    HTTP.put(name(index))
   end
 
   @doc """
