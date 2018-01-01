@@ -78,6 +78,4 @@ before_script:
 script:
   - mix test --include integration
   - mix credo --strict
-services:
-  - elasticsearch
 
