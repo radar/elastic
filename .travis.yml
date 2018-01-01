@@ -16,6 +16,7 @@ env:
   - ES_VERSION=5.5.0
 
 before_install:
+  - sudo dpkg -r elasticsearch
   - case "$ES_VERSION" in
     "") ;;
 
