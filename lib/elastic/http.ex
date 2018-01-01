@@ -98,7 +98,11 @@ defmodule Elastic.HTTP do
     |> Keyword.put(:body, body)
     |> Keyword.put(:timeout, 30_000)
 
-    headers = Keyword.get(options, :headers, [])
+
+    headers = Keyword.get(options, :headers, Keyword.new)
+    headers = Keyword.put(headers, :"Content-Type", "application/json")
+    options = Keyword.put(options, :headers, headers)
+
     url = build_url(method, url, headers, body)
     apply(HTTPotion, method, [url, options]) |> process_response
   end
