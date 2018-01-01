@@ -40,9 +40,13 @@ If you've got a feature request, then please submit a pull request which adds th
 
 ## ElasticSearch version
 
-This package is designed to work with ElasticSearch 2.4.x, since that's the version I am personally using.
+This package is designed to work with the following ElasticSearch versions:
 
-I think if there are API compatibility issues with ElasticSearch 5.x then we should look at creating a branch for 5.x compatibility. Please submit a pull request to kick off this process.
+- 2.4.x
+- 5.x
+- 6.x
+
+If you find any incompatibility issues, please file a GitHub issue about it here, or even better open a pull request to fix it. Thanks!
 
 ## Elastic / Elastix / Tirexs
 
