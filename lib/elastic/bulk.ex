@@ -77,8 +77,6 @@ defmodule Elastic.Bulk do
     ] |> Enum.join("\n")
   end
 
-
-
   defp identifier(index, type, nil) do
     %{_index: index, _type: type}
   end
