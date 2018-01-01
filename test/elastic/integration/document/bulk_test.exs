@@ -14,8 +14,8 @@ defmodule Elastic.Document.BulkTest do
   end
 
   @tag integration: true
-  test "bulk creates answers without ids" do
-    Elastic.Bulk.create([
+  test "bulk indexes answers without ids" do
+    {:ok, 200, _} = Elastic.Bulk.index([
       {index(), "answer", nil, %{text: "hello world"}},
       {index(), "answer", nil, %{text: "world hello"}}
     ])
@@ -32,9 +32,27 @@ defmodule Elastic.Document.BulkTest do
   end
 
   @tag integration: true
+  test "bulk creates answers with IDs" do
+    {:ok, 200, _} = Elastic.Bulk.create([
+      {index(), "answer", 1, %{text: "hello world"}},
+      {index(), "answer", 2, %{text: "world hello"}}
+    ])
+
+    Elastic.Index.refresh("answer")
+
+    answers = Answer.search(%{
+      query: %{
+        match: %{text: "world"}
+      },
+    })
+
+    assert Enum.count(answers) == 2
+  end
+
+  @tag integration: true
   test "bulk updates answers with ids" do
     Answer.index(1, %{text: "this is an answer"})
-    Elastic.Bulk.update([
+    {:ok, 200, _} = Elastic.Bulk.update([
       {index(), "answer", 1, %{comments: 5}},
     ])
 
