@@ -5,7 +5,7 @@ defmodule Elastic.Mixfile do
   def project do
     [app: :elastic,
      version: @version,
-     elixir: "~> 1.3",
+     elixir: "~> 1.5",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      elixirc_paths: elixirc_paths(Mix.env),
