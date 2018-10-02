@@ -7,9 +7,11 @@ sudo: required
 env:
   matrix:
   - ES_VERSION=2.4.6
-  - ES_VERSION=5.6.5
-  - ES_VERSION=6.0.1
+  - ES_VERSION=5.6.12
   - ES_VERSION=6.1.1
+  - ES_VERSION=6.2.4
+  - ES_VERSION=6.3.2
+  - ES_VERSION=6.4.1
 
 before_install:
   - sudo dpkg -r elasticsearch
