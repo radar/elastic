@@ -14,7 +14,7 @@ Want to talk to Elastic Search in Elixir, but don't want to use raw HTTP calls? 
 ```elixir
 defp deps do
   [
-    {:elastic, "~> 1.0"}
+    {:elastic, "~> 3.0"}
   ]
 ```
 
