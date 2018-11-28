@@ -12,7 +12,7 @@ defmodule Elastic.Index do
   """
   def name(index) do
     [index_prefix(), mix_env(), index]
-    |> Enum.reject(&(&1 == nil))
+    |> Enum.reject(&(&1 == nil || &1 == ""))
     |> Enum.join("_")
   end
 
@@ -118,7 +118,7 @@ defmodule Elastic.Index do
 
   defp mix_env do
     if Application.get_env(:elastic, :use_mix_env),
-      do: Mix.env,
+      do: Mix.env(),
       else: nil
   end
 end
