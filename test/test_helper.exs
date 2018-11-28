@@ -15,3 +15,16 @@ defmodule Question do
 
   defstruct [:id, :text, :comments]
 end
+
+defmodule ElasticTestUtil do
+  def with_application_env(app, key, new, context) do
+    old = Application.get_env(app, key)
+    Application.put_env(app, key, new)
+
+    try do
+      context.()
+    after
+      Application.put_env(app, key, old)
+    end
+  end
+end
