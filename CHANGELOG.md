@@ -1,5 +1,22 @@
 # Elastic Changelog
 
+## 3.2.0
+
+* Bumped dependencies
+* Switched from Poison to Jason for JSON encoding / decoding
+
+## 3.1.1
+
+Reject empty strings in Index.name/1 - #19
+
+## 3.1.0
+
+Added parameterised version of `Index.create` - #18
+
+## 3.0.0
+
+Support lots of different ElasticSearch versions.
+
 ## 2.6.1
 
 Relax Poison dependency to allow ~> 2.2 or ~> 3.0.
