@@ -30,7 +30,7 @@ defmodule Elastic.ResponseHandler do
   end
 
   defp decode_body(body) do
-    {:ok, decoded_body} = Poison.decode(body)
+    {:ok, decoded_body} = Jason.decode(body)
     decoded_body
   end
 end

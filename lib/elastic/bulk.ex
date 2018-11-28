@@ -64,16 +64,16 @@ defmodule Elastic.Bulk do
 
   defp index_or_create_document({index, type, id, document}, action) do
     [
-      Poison.encode!(%{action => identifier(index, type, id)}),
-      Poison.encode!(document)
+      Jason.encode!(%{action => identifier(index, type, id)}),
+      Jason.encode!(document)
     ] |> Enum.join("\n")
   end
 
   defp update_document({index, type, id, document}) do
     [
-      Poison.encode!(%{update: identifier(index, type, id)}),
+      Jason.encode!(%{update: identifier(index, type, id)}),
       # Note that the API here is slightly different to index_or_create_document/2.
-      Poison.encode!(%{doc: document})
+      Jason.encode!(%{doc: document})
     ] |> Enum.join("\n")
   end
 

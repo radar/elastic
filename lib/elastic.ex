@@ -9,7 +9,7 @@ defmodule Elastic do
   * `Elastic.Index`: Functions for working with indexes.
   * `Elastic.Bulk`: Provides functions for bulk creating or updating documents in an ElasticSearch store.
   * `Elastic.Scroller`: A server which works with Elastic Search's [Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/2.4/search-request-scroll.html).
-  * `Elastic.HTTP`: A very thin veneer / low-level API over HTTPotion and Poison to make queries to your Elastic Search store.
+  * `Elastic.HTTP`: A very thin veneer / low-level API over HTTPotion and Jason to make queries to your Elastic Search store.
 
   ## Configuration
 

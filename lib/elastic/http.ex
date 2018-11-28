@@ -120,7 +120,7 @@ defmodule Elastic.HTTP do
   end
 
   defp encode_body(body) do
-    {:ok, encoded_body} = Poison.encode(body)
+    {:ok, encoded_body} = Jason.encode(body)
     encoded_body
   end
 
