@@ -1,5 +1,6 @@
 defmodule Elastic.HTTP do
   alias Elastic.AWS
+
   @moduledoc ~S"""
   Used to make raw calls to Elastic Search.
 
@@ -89,15 +90,17 @@ defmodule Elastic.HTTP do
   end
 
   defp base_url do
-    Elastic.base_url || "http://localhost:9200"
+    Elastic.base_url() || "http://localhost:9200"
   end
 
   defp request(method, url, options) do
     body = Keyword.get(options, :body, []) |> encode_body
-    options = options
-    |> Keyword.put(:body, body)
-    |> Keyword.put(:timeout, 30_000)
-    |> add_content_type_header
+
+    options =
+      options
+      |> Keyword.put(:body, body)
+      |> Keyword.put(:connect_timeout, 30_000)
+      |> add_content_type_header
 
     headers = options[:headers]
 
@@ -106,7 +109,7 @@ defmodule Elastic.HTTP do
   end
 
   defp add_content_type_header(options) do
-    headers = Keyword.get(options, :headers, Keyword.new)
+    headers = Keyword.get(options, :headers, Keyword.new())
     headers = Keyword.put(headers, :"Content-Type", "application/json")
     Keyword.put(options, :headers, headers)
   end
@@ -115,18 +118,23 @@ defmodule Elastic.HTTP do
     ResponseHandler.process(response)
   end
 
-  defp encode_body([]) do
-    []
+  defp encode_body(body) when is_binary(body) do
+    body
   end
 
-  defp encode_body(body) do
+  defp encode_body(body) when is_map(body) and body != %{} do
     {:ok, encoded_body} = Jason.encode(body)
     encoded_body
   end
 
+  defp encode_body(_body) do
+    ""
+  end
+
   defp build_url(method, url, headers, body) do
     url = URI.merge(base_url(), url)
-    if AWS.enabled?,
+
+    if AWS.enabled?(),
       do: AWS.sign_url(method, url, headers, body),
       else: url
   end
