@@ -40,7 +40,7 @@ If you've got a feature request, then please submit a pull request which adds th
 
 ## ElasticSearch version
 
-This package is designed to work with the following ElasticSearch versions:
+This package is designed to work with and routinely tested against the following ElasticSearch versions:
 
 - 2.4.x
 - 5.x
