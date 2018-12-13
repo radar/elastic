@@ -8,7 +8,7 @@ Pre-check:
 Tests:
 
 - [ ] `travis.yml`: Ensure most recent 3 minor Elixir versions are supported.
-- [ ] `travis.yml`: Ensure most recent 5 E\lastic Search versions are supported.
+- [ ] `travis.yml`: Ensure most recent 5 Elastic Search versions are supported.
 
 Release:
 
