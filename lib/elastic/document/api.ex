@@ -168,8 +168,12 @@ defmodule Elastic.Document.API do
         case raw_get(id, es_index) do
           {:ok, 200, %{"_source" => source, "_id" => id}} ->
             into_struct(id, source)
-          {:error, 404, %{"found" => false}} -> nil
-          other -> other
+
+          {:error, 404, %{"found" => false}} ->
+            nil
+
+          other ->
+            other
         end
       end
 
@@ -182,15 +186,16 @@ defmodule Elastic.Document.API do
       end
 
       def search(query, es_index \\ @es_index) do
-        result = Query.build(es_index, query) |> Index.search
+        result = Query.build(es_index, query) |> Index.search()
         {:ok, 200, %{"hits" => %{"hits" => hits}}} = result
-        Enum.map(hits, fn (%{"_source" => source, "_id" => id}) ->
+
+        Enum.map(hits, fn %{"_source" => source, "_id" => id} ->
           into_struct(id, source)
         end)
       end
 
       def raw_search(query, es_index \\ @es_index) do
-        search_query(query, es_index) |> Index.search
+        search_query(query, es_index) |> Index.search()
       end
 
       def search_query(query, es_index \\ @es_index) do
@@ -198,7 +203,7 @@ defmodule Elastic.Document.API do
       end
 
       def raw_count(query, es_index \\ @es_index) do
-        Query.build(es_index, query) |> Index.count
+        Query.build(es_index, query) |> Index.count()
       end
 
       def count(query) do
@@ -211,8 +216,7 @@ defmodule Elastic.Document.API do
       end
 
       defp into_struct(id, source) do
-        item = for {key, value} <- source, into: %{},
-          do: {String.to_atom(key), value}
+        item = for {key, value} <- source, into: %{}, do: {String.to_atom(key), value}
         struct(__MODULE__, Map.put(item, :id, id))
       end
     end

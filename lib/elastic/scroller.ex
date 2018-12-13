@@ -35,39 +35,41 @@ defmodule Elastic.Scroller do
   """
 
   @spec start_link(%{
-          required(:index) => String.t,
+          required(:index) => String.t(),
           optional(:body) => map(),
           optional(:size) => pos_integer(),
-          optional(:keepalive) => String.t,
-       })
-  :: {:ok, pid()}
+          optional(:keepalive) => String.t()
+        }) :: {:ok, pid()}
   def start_link(opts = %{index: index}) do
-    opts = opts
-    |> Map.put_new(:body, %{})
-    |> Map.put_new(:size, 100)
-    |> Map.put_new(:keepalive, "1m")
-    |> Map.put(:index, index)
+    opts =
+      opts
+      |> Map.put_new(:body, %{})
+      |> Map.put_new(:size, 100)
+      |> Map.put_new(:keepalive, "1m")
+      |> Map.put(:index, index)
+
     GenServer.start_link(__MODULE__, opts)
   end
 
   @spec init(%{
-          required(:index) => String.t,
+          required(:index) => String.t(),
           required(:body) => map(),
           required(:size) => pos_integer(),
-          required(:keepalive) => String.t,
-        })
-  :: {:ok, pid()} | {:stop, String.t}
+          required(:keepalive) => String.t()
+        }) :: {:ok, pid()} | {:stop, String.t()}
   def init(state = %{index: index, body: body, size: size, keepalive: keepalive}) do
-    scroll = Scroll.start(%{
-      index: index,
-      body: body,
-      size: size,
-      keepalive: keepalive
-    })
+    scroll =
+      Scroll.start(%{
+        index: index,
+        body: body,
+        size: size,
+        keepalive: keepalive
+      })
 
     case scroll do
       {:ok, 200, %{"_scroll_id" => id, "hits" => %{"hits" => hits}}} ->
         {:ok, Map.merge(state, %{scroll_id: id, hits: hits})}
+
       {:error, _status, error} ->
         {:stop, inspect(error)}
     end
@@ -80,8 +82,7 @@ defmodule Elastic.Scroller do
   Elastic.Scroller.results(pid)
   ```
   """
-  @spec results(pid())
-    :: [map()]
+  @spec results(pid()) :: [map()]
   def results(pid) do
     GenServer.call(pid, :results)
   end
@@ -96,10 +97,10 @@ defmodule Elastic.Scroller do
   ```
   """
 
-  @spec next_page(pid())
-    :: {:ok, String.t}
-       | {:error, :search_context_not_found, map()}
-       | {:error, String.t}
+  @spec next_page(pid()) ::
+          {:ok, String.t()}
+          | {:error, :search_context_not_found, map()}
+          | {:error, String.t()}
   def next_page(pid) do
     GenServer.call(pid, :next_page)
   end
@@ -138,7 +139,11 @@ defmodule Elastic.Scroller do
     {:reply, hits, state}
   end
 
-  def handle_call(:next_page, _from, state = %{index: index, body: body, keepalive: keepalive, scroll_id: scroll_id}) do
+  def handle_call(
+        :next_page,
+        _from,
+        state = %{index: index, body: body, keepalive: keepalive, scroll_id: scroll_id}
+      ) do
     scroll = %{
       index: index,
       body: body,
@@ -146,14 +151,14 @@ defmodule Elastic.Scroller do
       keepalive: keepalive
     }
 
-    case scroll |> Scroll.next do
-      {:ok, 200, %{
-      "_scroll_id" => id,
-      "hits" => %{"hits" => hits}}} ->
+    case scroll |> Scroll.next() do
+      {:ok, 200, %{"_scroll_id" => id, "hits" => %{"hits" => hits}}} ->
         state = state |> Map.merge(%{scroll_id: id, hits: hits})
         {:reply, {:ok, id}, state}
+
       {:error, 404, error} ->
         {:reply, {:error, :search_context_not_found, error}, state}
+
       {:error, _, error} ->
         {:reply, {:error, inspect(error)}, state}
     end

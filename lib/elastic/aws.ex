@@ -1,5 +1,4 @@
 defmodule Elastic.AWS do
-
   @moduledoc false
   def enabled? do
     settings()[:enabled]
@@ -14,7 +13,7 @@ defmodule Elastic.AWS do
       settings().region,
       "es",
       process_headers(method, headers),
-      DateTime.utc_now |> DateTime.to_naive,
+      DateTime.utc_now() |> DateTime.to_naive(),
       body
     )
   end
@@ -24,8 +23,8 @@ defmodule Elastic.AWS do
 
   defp process_headers(_method, headers) do
     for {k, v} <- headers,
-      into: %{},
-      do: {to_string(k), to_string(v)}
+        into: %{},
+        do: {to_string(k), to_string(v)}
   end
 
   defp settings do

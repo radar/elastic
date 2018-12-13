@@ -16,21 +16,37 @@ defmodule Elastic.ResponseHandlerTest do
 
   test "handles a econnrefused" do
     response = ResponseHandler.process(%HTTPotion.ErrorResponse{message: "econnrefused"})
-    assert {:error, 0, %{"error" => "Could not connect to Elasticsearch: connection refused (econnrefused)"}} == response
+
+    assert {:error, 0,
+            %{"error" => "Could not connect to Elasticsearch: connection refused (econnrefused)"}} ==
+             response
   end
 
   test "handles a nxdomain" do
     response = ResponseHandler.process(%HTTPotion.ErrorResponse{message: "nxdomain"})
-    assert {:error, 0, %{"error" => "Could not connect to Elasticsearch: could not resolve address (nxdomain)"}} == response
+
+    assert {:error, 0,
+            %{
+              "error" =>
+                "Could not connect to Elasticsearch: could not resolve address (nxdomain)"
+            }} == response
   end
 
   test "handles a connection_closed" do
     response = ResponseHandler.process(%HTTPotion.ErrorResponse{message: "connection_closed"})
-    assert {:error, 0, %{"error" => "Could not connect to Elasticsearch: connection closed (connection_closed)"}} == response
+
+    assert {:error, 0,
+            %{
+              "error" =>
+                "Could not connect to Elasticsearch: connection closed (connection_closed)"
+            }} == response
   end
 
   test "handles a req_timedout" do
     response = ResponseHandler.process(%HTTPotion.ErrorResponse{message: "req_timedout"})
-    assert {:error, 0, %{"error" => "Could not connect to Elasticsearch: request timed out (req_timedout)"}} == response
+
+    assert {:error, 0,
+            %{"error" => "Could not connect to Elasticsearch: request timed out (req_timedout)"}} ==
+             response
   end
 end

@@ -28,27 +28,30 @@ defmodule Elastic.Document.APITest do
   test "puts + gets a raw document from the index" do
     Answer.index(1, %{text: "Hello world!"})
     {:ok, 200, result} = Answer.raw_get(1)
+
     assert result == %{
-      "_id" => "1",
-      "_index" => "elastic_test_answer",
-      "_source" => %{
-        "text" => "Hello world!"
-      },
-      "_type" => "answer",
-      "_version" => 1,
-      "found" => true
-    }
+             "_id" => "1",
+             "_index" => "elastic_test_answer",
+             "_source" => %{
+               "text" => "Hello world!"
+             },
+             "_type" => "answer",
+             "_version" => 1,
+             "found" => true
+           }
   end
 
   @tag integration: true
   test "can search for a raw answer" do
     Answer.index(1, %{text: "Hello world!"})
     Elastic.Index.refresh("answer")
-    {:ok, 200, %{"hits" => %{"hits" => hits}}} = Answer.raw_search(%{
-      query: %{
-        match: %{text: "Hello"}
-      }
-    })
+
+    {:ok, 200, %{"hits" => %{"hits" => hits}}} =
+      Answer.raw_search(%{
+        query: %{
+          match: %{text: "Hello"}
+        }
+      })
 
     assert match?([%{"_source" => %{"text" => "Hello world!"}}], hits)
   end
@@ -57,11 +60,13 @@ defmodule Elastic.Document.APITest do
   test "can search for an answer" do
     Answer.index(1, %{text: "Hello world!"})
     Elastic.Index.refresh("answer")
-    answers = Answer.search(%{
-      query: %{
-        match: %{text: "Hello"}
-      }
-    })
+
+    answers =
+      Answer.search(%{
+        query: %{
+          match: %{text: "Hello"}
+        }
+      })
 
     assert answers == [%Answer{id: "1", text: "Hello world!"}]
   end
@@ -70,13 +75,16 @@ defmodule Elastic.Document.APITest do
   test "can search for a question with explicit index" do
     Question.index(2, %{text: "Goodbye world?"}, "question")
     Elastic.Index.refresh("question")
-    questions = Question.search(%{
-      query: %{
-        match: %{text: "Goodbye"}
-      }
-    },
-    "question"
-    )
+
+    questions =
+      Question.search(
+        %{
+          query: %{
+            match: %{text: "Goodbye"}
+          }
+        },
+        "question"
+      )
 
     assert questions == [%Question{id: "2", text: "Goodbye world?"}]
   end
@@ -85,13 +93,16 @@ defmodule Elastic.Document.APITest do
   test "can search for a raw question with explicit index" do
     Question.index(1, %{text: "Raw world!"}, "raw_index")
     Elastic.Index.refresh("raw_index")
-    {:ok, 200, %{"hits" => %{"hits" => hits}}} = Question.raw_search(%{
-      query: %{
-        match: %{text: "Raw"}
-      }
-    },
-    "raw_index"
-    )
+
+    {:ok, 200, %{"hits" => %{"hits" => hits}}} =
+      Question.raw_search(
+        %{
+          query: %{
+            match: %{text: "Raw"}
+          }
+        },
+        "raw_index"
+      )
 
     assert match?([%{"_source" => %{"text" => "Raw world!"}}], hits)
   end
@@ -121,11 +132,10 @@ defmodule Elastic.Document.APITest do
   @tag integration: true
   test "checks if the index exists" do
     Index.delete("answer")
-    refute Answer.index_exists?
+    refute Answer.index_exists?()
 
     Answer.index(1, %{text: "Hello world!"})
 
-    assert Answer.index_exists?
+    assert Answer.index_exists?()
   end
-
 end

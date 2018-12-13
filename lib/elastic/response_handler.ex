@@ -10,19 +10,23 @@ defmodule Elastic.ResponseHandler do
   end
 
   def process(%HTTPotion.ErrorResponse{message: "econnrefused"}) do
-    {:error, 0, %{"error" => "Could not connect to Elasticsearch: connection refused (econnrefused)"}}
+    {:error, 0,
+     %{"error" => "Could not connect to Elasticsearch: connection refused (econnrefused)"}}
   end
 
   def process(%HTTPotion.ErrorResponse{message: "nxdomain"}) do
-    {:error, 0, %{"error" => "Could not connect to Elasticsearch: could not resolve address (nxdomain)"}}
+    {:error, 0,
+     %{"error" => "Could not connect to Elasticsearch: could not resolve address (nxdomain)"}}
   end
 
   def process(%HTTPotion.ErrorResponse{message: "connection_closed"}) do
-    {:error, 0, %{"error" => "Could not connect to Elasticsearch: connection closed (connection_closed)"}}
+    {:error, 0,
+     %{"error" => "Could not connect to Elasticsearch: connection closed (connection_closed)"}}
   end
 
   def process(%HTTPotion.ErrorResponse{message: "req_timedout"}) do
-    {:error, 0, %{"error" => "Could not connect to Elasticsearch: request timed out (req_timedout)"}}
+    {:error, 0,
+     %{"error" => "Could not connect to Elasticsearch: request timed out (req_timedout)"}}
   end
 
   defp decode_body("") do

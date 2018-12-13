@@ -36,7 +36,7 @@ defmodule Elastic.Bulk do
   """
   def index(documents) do
     documents
-    |> Enum.map(&(index_or_create_document(&1, :index)))
+    |> Enum.map(&index_or_create_document(&1, :index))
     |> call_bulk_api
   end
 
@@ -47,7 +47,7 @@ defmodule Elastic.Bulk do
   """
   def create(documents) do
     documents
-    |> Enum.map(&(index_or_create_document(&1, :create)))
+    |> Enum.map(&index_or_create_document(&1, :create))
     |> call_bulk_api
   end
 
@@ -66,7 +66,8 @@ defmodule Elastic.Bulk do
     [
       Jason.encode!(%{action => identifier(index, type, id)}),
       Jason.encode!(document)
-    ] |> Enum.join("\n")
+    ]
+    |> Enum.join("\n")
   end
 
   defp update_document({index, type, id, document}) do
@@ -74,7 +75,8 @@ defmodule Elastic.Bulk do
       Jason.encode!(%{update: identifier(index, type, id)}),
       # Note that the API here is slightly different to index_or_create_document/2.
       Jason.encode!(%{doc: document})
-    ] |> Enum.join("\n")
+    ]
+    |> Enum.join("\n")
   end
 
   defp identifier(index, type, nil) do

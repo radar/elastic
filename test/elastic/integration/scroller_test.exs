@@ -12,9 +12,11 @@ defmodule Elastic.Integration.ScrollTest do
 
   @tag integration: true
   test "starting a new scroll" do
-    {:ok, pid} = Scroller.start_link(%{
-      index: "answer"
-    })
+    {:ok, pid} =
+      Scroller.start_link(%{
+        index: "answer"
+      })
+
     assert Scroller.index(pid) == "elastic_test_answer"
     assert Scroller.scroll_id(pid)
     assert Scroller.body(pid) == %{}
@@ -23,43 +25,51 @@ defmodule Elastic.Integration.ScrollTest do
 
   @tag integration: true
   test "starting a new scroll with a body" do
-    body =  %{
+    body = %{
       query: %{
         match: %{text: "Hello"}
       }
     }
 
-    {:ok, pid} = Scroller.start_link(%{
-      index: "answer",
-      body: body
-    })
+    {:ok, pid} =
+      Scroller.start_link(%{
+        index: "answer",
+        body: body
+      })
+
     assert Scroller.body(pid) == body
   end
 
   @tag integration: true
   test "starting a new scroll with a different keepalive" do
-    {:ok, pid} = Scroller.start_link(%{
-      index: "answer",
-      keepalive: "2m"
-    })
+    {:ok, pid} =
+      Scroller.start_link(%{
+        index: "answer",
+        keepalive: "2m"
+      })
+
     assert Scroller.keepalive(pid) == "2m"
   end
 
   @tag integration: true
   test "starting a new scroll with a different size" do
-    {:ok, pid} = Scroller.start_link(%{
-      index: "answer",
-      size: 200
-    })
+    {:ok, pid} =
+      Scroller.start_link(%{
+        index: "answer",
+        size: 200
+      })
+
     assert Scroller.size(pid) == 200
   end
 
   @tag integration: true
   test "results" do
-    {:ok, pid} = Scroller.start_link(%{
-      index: "answer",
-      size: 1
-    })
+    {:ok, pid} =
+      Scroller.start_link(%{
+        index: "answer",
+        size: 1
+      })
+
     # IDs here are returned in a seemingly random, but predicatable order.
     # On my machine, they are id1=2, id2=1 id3=3
     [%{"_id" => id1}] = Scroller.results(pid)
@@ -78,10 +88,12 @@ defmodule Elastic.Integration.ScrollTest do
 
   @tag integration: true
   test "requesting next page after scroll clear returns an error" do
-    {:ok, pid} = Scroller.start_link(%{
-      index: "answer",
-      size: 1,
-    })
+    {:ok, pid} =
+      Scroller.start_link(%{
+        index: "answer",
+        size: 1
+      })
+
     Scroller.clear(pid)
 
     assert {:error, :search_context_not_found, _} = Scroller.next_page(pid)
@@ -90,31 +102,30 @@ defmodule Elastic.Integration.ScrollTest do
   @tag integration: true
   describe "init" do
     test "starts the server" do
-      assert {:ok, state} = Scroller.init(
-        %{
-          index: "answer",
-          body: %{},
-          size: 100,
-          keepalive: "1m"
-        }
-      )
+      assert {:ok, state} =
+               Scroller.init(%{
+                 index: "answer",
+                 body: %{},
+                 size: 100,
+                 keepalive: "1m"
+               })
+
       assert Map.take(state, [:index, :body, :size, :keepalive]) == %{
-        index: "answer",
-        body: %{},
-        size: 100,
-        keepalive: "1m"
-      }
+               index: "answer",
+               body: %{},
+               size: 100,
+               keepalive: "1m"
+             }
     end
 
     test "with an invalid query stops the server" do
-      assert {:stop, _} = Scroller.init(
-        %{
-          index: "answer",
-          body: %{"bad" => "body"},
-          size: 100,
-          keepalive: "1m"
-        }
-      )
+      assert {:stop, _} =
+               Scroller.init(%{
+                 index: "answer",
+                 body: %{"bad" => "body"},
+                 size: 100,
+                 keepalive: "1m"
+               })
     end
   end
 end

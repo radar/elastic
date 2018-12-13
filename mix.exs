@@ -3,22 +3,24 @@ defmodule Elastic.Mixfile do
   @version "3.2.0"
 
   def project do
-    [app: :elastic,
-     version: @version,
-     elixir: "~> 1.5",
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     elixirc_paths: elixirc_paths(Mix.env),
-     package: package(),
-     # Docs
-     name: "Elastic",
-     docs: [
-      source_ref: "v#{@version}",
-      main: "Elastic",
-      canonical: "http://hexdocs.pm/elastic",
-      source_url: "https://github.com/radar/elastic",
-    ] ,
-     deps: deps()]
+    [
+      app: :elastic,
+      version: @version,
+      elixir: "~> 1.5",
+      build_embedded: Mix.env() == :prod,
+      start_permanent: Mix.env() == :prod,
+      elixirc_paths: elixirc_paths(Mix.env()),
+      package: package(),
+      # Docs
+      name: "Elastic",
+      docs: [
+        source_ref: "v#{@version}",
+        main: "Elastic",
+        canonical: "http://hexdocs.pm/elastic",
+        source_url: "https://github.com/radar/elastic"
+      ],
+      deps: deps()
+    ]
   end
 
   def application do
