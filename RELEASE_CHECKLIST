@@ -1,0 +1,19 @@
+Pre-check:
+
+- [ ] Ensure dependencies are up-to-date: `mix deps.update --all`
+- [ ] Run `mix credo --strict` to check for code complaints
+- [ ] Run `mix formatter`, commit any changes
+- [ ] Run integration tests locally: `mix test --include integration`
+
+Tests:
+
+- [ ] `travis.yml`: Ensure most recent 3 minor Elixir versions are supported.
+- [ ] `travis.yml`: Ensure most recent 5 E\lastic Search versions are supported.
+
+Release:
+
+- [ ] Bump version in `mix.exs`
+- [ ] Commit to GitHub
+- [ ] Create a tag for this release, push tag to GitHub
+- [ ] Publish with `mix hex.publish`
+- [ ] Writeup changelog in `CHANGELOG.md`
