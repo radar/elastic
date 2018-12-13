@@ -1,4 +1,4 @@
-defmodule Elastic.Integration.ScrolLTest do
+defmodule Elastic.Integration.ScrollTest do
   use Elastic.IntegrationTestCase
   alias Elastic.Scroller
 
