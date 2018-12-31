@@ -26,6 +26,7 @@ defmodule Elastic do
   ```elixir
   config :elastic,
     base_url: "https://your-amazon-es-endpoint-goes-here",
+    basic_auth: {"username", "password"},
     aws: %{
       enabled: true,
       access_key_id: "ACCESS_KEY_ID_GOES_HERE",
@@ -39,5 +40,9 @@ defmodule Elastic do
 
   def base_url do
     Application.get_env(:elastic, :base_url)
+  end
+
+  def basic_auth do
+    Application.get_env(:elastic, :basic_auth, nil)
   end
 end

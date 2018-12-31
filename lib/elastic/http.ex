@@ -101,6 +101,7 @@ defmodule Elastic.HTTP do
       |> Keyword.put(:body, body)
       |> Keyword.put(:connect_timeout, 30_000)
       |> add_content_type_header
+      |> add_basic_auth
 
     headers = options[:headers]
 
@@ -112,6 +113,11 @@ defmodule Elastic.HTTP do
     headers = Keyword.get(options, :headers, Keyword.new())
     headers = Keyword.put(headers, :"Content-Type", "application/json")
     Keyword.put(options, :headers, headers)
+  end
+
+  def add_basic_auth(options) do
+    basic_auth = Keyword.get(options, :basic_auth, Elastic.basic_auth())
+    Keyword.put(options, :basic_auth, basic_auth)
   end
 
   defp process_response(response) do
