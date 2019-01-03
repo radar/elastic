@@ -18,6 +18,7 @@ defmodule Elastic do
   * `base_url`: Where your Elastic Search instance is located. Defaults to http://localhost:9200.
   * `index_prefix`: A prefix to use for all indexes. Only used when using the Document API, or `Elastic.Index`.
   * `use_mix_env`: Adds `Mix.env` to an index, so that the index name used is something like `dev_answer`. Can be used in conjunction with `index_prefix` to get things like `company_dev_answer` as the index name.
+  * `timeout`: How long to wait before timing out requests. Default is 30 seconds.
 
   ### AWS Configuration
 
