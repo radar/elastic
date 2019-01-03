@@ -2,7 +2,7 @@ Pre-check:
 
 - [ ] Ensure dependencies are up-to-date: `mix deps.update --all`
 - [ ] Run `mix credo --strict` to check for code complaints
-- [ ] Run `mix formatter`, commit any changes
+- [ ] Run `mix format`, commit any changes
 - [ ] Run integration tests locally: `mix test --include integration`
 
 Tests:
