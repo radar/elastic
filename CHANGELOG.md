@@ -1,5 +1,13 @@
 # Elastic Changelog
 
+## 3.4.0
+
+Added `basic_auth` and `timeout` options to HTTP requests - #22
+
+## 3.3.0
+
+Fixed issue where posting with NDJSON body was broken - #20 / #31
+
 ## 3.2.0
 
 * Bumped dependencies
