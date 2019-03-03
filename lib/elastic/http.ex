@@ -83,10 +83,8 @@ defmodule Elastic.HTTP do
 
   def bulk(options) do
     body = Keyword.get(options, :body, "") <> "\n"
-    options = Keyword.put(options, :body, body) |> add_content_type_header
-    headers = options[:headers]
-    url = build_url(:post, "_bulk", headers, body)
-    HTTPotion.post(url, options) |> process_response
+    options = Keyword.put(options, :body, body)
+    request(:post, "_bulk", options)
   end
 
   defp base_url do
@@ -96,30 +94,48 @@ defmodule Elastic.HTTP do
   defp request(method, url, options) do
     body = Keyword.get(options, :body, []) |> encode_body
     timeout = Application.get_env(:elastic, :timeout, 30_000)
+    url = URI.merge(base_url(), url)
 
     options =
       options
+      |> Keyword.put_new(:headers, Keyword.new())
       |> Keyword.put(:body, body)
       |> Keyword.put(:connect_timeout, timeout)
       |> add_content_type_header
+      |> add_aws_header(method, url, body)
       |> add_basic_auth
 
-    headers = options[:headers]
-
-    url = build_url(method, url, headers, body)
     apply(HTTPotion, method, [url, options]) |> process_response
   end
 
   defp add_content_type_header(options) do
-    headers = Keyword.get(options, :headers, Keyword.new())
-    headers = Keyword.put(headers, :"Content-Type", "application/json")
+    headers = Keyword.put(options[:headers], :"Content-Type", "application/json")
     Keyword.put(options, :headers, headers)
+  end
+
+  def add_aws_header(options, method, url, body) do
+    if AWS.enabled? do
+      headers = AWS.authorization_headers(
+        method,
+        url,
+        options[:headers],
+        body
+      )
+      |> Enum.reduce(options[:headers], fn ({header, value}, headers) ->
+        Keyword.put(headers, String.to_atom(header), value)
+      end)
+
+      Keyword.put(options, :headers, headers)
+    else
+      options
+    end
   end
 
   def add_basic_auth(options) do
     basic_auth = Keyword.get(options, :basic_auth, Elastic.basic_auth())
     Keyword.put(options, :basic_auth, basic_auth)
   end
+
 
   defp process_response(response) do
     ResponseHandler.process(response)
@@ -136,13 +152,5 @@ defmodule Elastic.HTTP do
 
   defp encode_body(_body) do
     ""
-  end
-
-  defp build_url(method, url, headers, body) do
-    url = URI.merge(base_url(), url)
-
-    if AWS.enabled?(),
-      do: AWS.sign_url(method, url, headers, body),
-      else: url
   end
 end

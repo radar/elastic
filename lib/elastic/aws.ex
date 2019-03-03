@@ -4,8 +4,8 @@ defmodule Elastic.AWS do
     settings()[:enabled]
   end
 
-  def sign_url(method, url, headers, body) do
-    AWSAuth.sign_url(
+  def authorization_headers(method, url, headers, body) do
+    AWSAuth.sign_authorization_header(
       settings().access_key_id,
       settings().secret_access_key,
       to_string(method),
@@ -13,7 +13,6 @@ defmodule Elastic.AWS do
       settings().region,
       "es",
       process_headers(method, headers),
-      DateTime.utc_now() |> DateTime.to_naive(),
       body
     )
   end
