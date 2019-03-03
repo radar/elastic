@@ -3,17 +3,17 @@ elixir:
   - 1.5.3
   - 1.6.6
   - 1.7.4
+  - 1.8.1
 sudo: required
 env:
   matrix:
   - ES_VERSION=2.4.6
   - ES_VERSION=5.6.12
-  - ES_VERSION=6.0.1
-  - ES_VERSION=6.1.1
   - ES_VERSION=6.2.4
   - ES_VERSION=6.3.2
   - ES_VERSION=6.4.1
   - ES_VERSION=6.5.3
+  - ES_VERSION=6.6.0
 
 before_install:
   - sudo dpkg -r elasticsearch
@@ -27,16 +27,6 @@ before_install:
 
     "5.6.12")
       export ES_VERSION=5.6.12 ;
-      curl -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-$ES_VERSION.deb && sudo dpkg -i --force-confnew elasticsearch-$ES_VERSION.deb && sudo service elasticsearch start
-      ;;
-
-    "6.0.1")
-      export ES_VERSION=6.0.1 ;
-      curl -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-$ES_VERSION.deb && sudo dpkg -i --force-confnew elasticsearch-$ES_VERSION.deb && sudo service elasticsearch start
-      ;;
-
-    "6.1.1")
-      export ES_VERSION=6.1.1 ;
       curl -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-$ES_VERSION.deb && sudo dpkg -i --force-confnew elasticsearch-$ES_VERSION.deb && sudo service elasticsearch start
       ;;
 
@@ -57,6 +47,11 @@ before_install:
 
     "6.5.3")
       export ES_VERSION=6.5.3 ;
+      curl -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-$ES_VERSION.deb && sudo dpkg -i --force-confnew elasticsearch-$ES_VERSION.deb && sudo service elasticsearch start
+      ;;
+
+    "6.6.0")
+      export ES_VERSION=6.6.0 ;
       curl -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-$ES_VERSION.deb && sudo dpkg -i --force-confnew elasticsearch-$ES_VERSION.deb && sudo service elasticsearch start
       ;;
    esac
