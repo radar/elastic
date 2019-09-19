@@ -24,7 +24,7 @@ defmodule Elastic.Mixfile do
   end
 
   def application do
-    [applications: [:logger, :httpotion]]
+    [applications: [:logger, :httpotion, :aws_auth, :jason]]
   end
 
   defp elixirc_paths(:test), do: ["lib", "test/support"]
