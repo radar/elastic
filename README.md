@@ -24,7 +24,7 @@ defp deps do
 
 ```elixir
 def application do
-  [applications: [:elastic]]
+  [extra_applications: [:elastic]]
 end
 ```
 
