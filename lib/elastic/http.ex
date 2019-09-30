@@ -136,7 +136,6 @@ defmodule Elastic.HTTP do
     Keyword.put(options, :basic_auth, basic_auth)
   end
 
-
   defp process_response(response) do
     ResponseHandler.process(response)
   end
