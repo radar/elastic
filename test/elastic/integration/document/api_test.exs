@@ -29,16 +29,14 @@ defmodule Elastic.Document.APITest do
     Answer.index(1, %{text: "Hello world!"})
     {:ok, 200, result} = Answer.raw_get(1)
 
-    assert result == %{
-             "_id" => "1",
-             "_index" => "elastic_test_answer",
-             "_source" => %{
-               "text" => "Hello world!"
-             },
-             "_type" => "answer",
-             "_version" => 1,
-             "found" => true
-           }
+    assert result["found"]
+    assert result["_id"] == "1"
+    assert result["_index"] == "elastic_test_answer"
+    assert result["_type"] == "answer"
+    assert result["_source"] == %{
+      "text" => "Hello world!"
+    }
+    assert result["_version"] == 1
   end
 
   @tag integration: true
