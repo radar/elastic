@@ -97,6 +97,9 @@
         {Credo.Check.Warning.UnusedTupleOperation},
         {Credo.Check.Warning.OperationWithConstantResult},
 
+        {Credo.Check.Refactor.MapInto, false},
+        {Credo.Check.Warning.LazyLogging, false},
+
         # Custom checks can be created using `mix credo.gen.check`.
         #
       ]
