@@ -68,7 +68,7 @@ defmodule Elastic.Scroller do
 
     case scroll do
       {:ok, 200, %{"_scroll_id" => id, "hits" => %{"hits" => hits}}} ->
-        {:ok, Map.merge(state, %{scroll_id: id, hits: hits}), Application.get_env(:elastic, :timeout, 30_000)}
+        {:ok, Map.merge(state, %{scroll_id: id, hits: hits})}
 
       {:error, _status, error} ->
         {:stop, inspect(error)}
@@ -102,7 +102,7 @@ defmodule Elastic.Scroller do
           | {:error, :search_context_not_found, map()}
           | {:error, String.t()}
   def next_page(pid) do
-    GenServer.call(pid, :next_page)
+    GenServer.call(pid, :next_page, Application.get_env(:elastic, :timeout, 30_000))
   end
 
   @doc false
