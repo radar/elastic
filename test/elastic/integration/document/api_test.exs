@@ -33,9 +33,11 @@ defmodule Elastic.Document.APITest do
     assert result["_id"] == "1"
     assert result["_index"] == "elastic_test_answer"
     assert result["_type"] == "answer"
+
     assert result["_source"] == %{
-      "text" => "Hello world!"
-    }
+             "text" => "Hello world!"
+           }
+
     assert result["_version"] == 1
   end
 
