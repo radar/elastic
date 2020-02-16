@@ -6,7 +6,14 @@ defmodule Elastic.ResponseHandler do
   end
 
   def process(%{body: body, status_code: status_code}) do
-    {:ok, status_code, decode_body(body)}
+    case decode_body(body) do
+      {:ok, decoded_body} ->
+        {:ok, status_code, decoded_body}
+
+      {:error, error} ->
+        {:error, 0,
+          %{"error" => "Could not decode response into JSON, error: #{inspect(Jason.DecodeError.message(error))}"}}
+    end
   end
 
   def process(%HTTPotion.ErrorResponse{message: "econnrefused"}) do
@@ -34,7 +41,6 @@ defmodule Elastic.ResponseHandler do
   end
 
   defp decode_body(body) do
-    {:ok, decoded_body} = Jason.decode(body)
-    decoded_body
+    with {:ok, decoded_body} <- Jason.decode(body), do: {:ok, decoded_body}
   end
 end
