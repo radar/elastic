@@ -1,0 +1,42 @@
+name: Elixir CI
+
+on: push
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        elixir_version: 
+          - 1.7.4
+          - 1.8.2
+          - 1.9.4
+          - 1.10.1 
+        elasticsearch_version:
+          - 2.4.6
+          - 6.3.2
+          - 6.4.1
+          - 6.5.3
+          - 6.6.0
+          - 7.6.0
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup elixir
+      uses: actions/setup-elixir@v1
+      with:
+        elixir-version: ${{ matrix.elixir_version }}
+        otp-version: 22.2 # Define the OTP version [required]
+        
+    - name: Install Dependencies
+      run: mix deps.get
+        
+    - name: Setup ElasticSearch
+      uses: getong/elasticsearch-action@v1
+      with:
+        # Version of elasticsearch to use
+        elasticsearch version: ${{matrix.elasticsearch_version}}
+
+    - name: Run Tests
+      run: mix test --include integration
