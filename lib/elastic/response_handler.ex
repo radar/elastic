@@ -8,8 +8,7 @@ defmodule Elastic.ResponseHandler do
 
       {:error, error} ->
         json_error(error)
-  end
-
+    end
   end
 
   def process(%{body: body, status_code: status_code}) do
@@ -17,7 +16,7 @@ defmodule Elastic.ResponseHandler do
       {:ok, decoded_body} ->
         {:ok, status_code, decoded_body}
 
-       {:error, error} ->
+      {:error, error} ->
         json_error(error)
     end
   end
@@ -44,7 +43,10 @@ defmodule Elastic.ResponseHandler do
 
   defp json_error(error) do
     {:error, 0,
-     %{"error" => "Could not decode response into JSON, error: #{inspect(Jason.DecodeError.message(error))}"}}
+     %{
+       "error" =>
+         "Could not decode response into JSON, error: #{inspect(Jason.DecodeError.message(error))}"
+     }}
   end
 
   defp decode_body(""), do: ""
