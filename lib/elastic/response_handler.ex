@@ -49,7 +49,7 @@ defmodule Elastic.ResponseHandler do
      }}
   end
 
-  defp decode_body(""), do: ""
+  defp decode_body(""), do: {:ok, ""}
 
   defp decode_body(body) do
     with {:ok, decoded_body} <- Jason.decode(body), do: {:ok, decoded_body}
