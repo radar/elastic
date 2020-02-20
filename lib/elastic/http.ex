@@ -100,7 +100,7 @@ defmodule Elastic.HTTP do
       options
       |> Keyword.put_new(:headers, Keyword.new())
       |> Keyword.put(:body, body)
-      |> Keyword.put(:connect_timeout, timeout)
+      |> Keyword.put(:timeout, timeout)
       |> add_content_type_header
       |> add_aws_header(method, url, body)
       |> add_basic_auth

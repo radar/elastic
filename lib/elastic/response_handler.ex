@@ -2,11 +2,24 @@ defmodule Elastic.ResponseHandler do
   @moduledoc false
 
   def process(%{body: body, status_code: status_code}) when status_code in 400..599 do
-    {:error, status_code, decode_body(body)}
+    case decode_body(body) do 
+      {:ok, decoded_body} -> 
+        {:error, status_code, decoded_body}
+
+      {:error, error} ->
+        json_error(error)
+  end  
+    
   end
 
   def process(%{body: body, status_code: status_code}) do
-    {:ok, status_code, decode_body(body)}
+    case decode_body(body) do
+      {:ok, decoded_body} ->
+        {:ok, status_code, decoded_body}
+
+       {:error, error} ->
+        json_error(error)
+    end
   end
 
   def process(%HTTPotion.ErrorResponse{message: "econnrefused"}) do
@@ -29,12 +42,14 @@ defmodule Elastic.ResponseHandler do
      %{"error" => "Could not connect to Elasticsearch: request timed out (req_timedout)"}}
   end
 
-  defp decode_body("") do
-    ""
-  end
+  defp json_error(error) do 
+    {:error, 0,
+     %{"error" => "Could not decode response into JSON, error: #{inspect(Jason.DecodeError.message(error))}"}}  
+  end  
+
+  defp decode_body(""), do: ""
 
   defp decode_body(body) do
-    {:ok, decoded_body} = Jason.decode(body)
-    decoded_body
+    with {:ok, decoded_body} <- Jason.decode(body), do: {:ok, decoded_body}
   end
 end
