@@ -38,5 +38,8 @@ jobs:
         # Version of elasticsearch to use
         elasticsearch version: ${{matrix.elasticsearch_version}}
 
+    - name: Sleepy Time (Wait for Elastic Search to boot up)
+      run: sleep 10
+
     - name: Run Tests
       run: mix test --include integration
