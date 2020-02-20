@@ -5,6 +5,7 @@ on: push
 jobs:
   build:
     strategy:
+      fail-fast: false
       matrix:
         elixir_version:
           - 1.7.4
