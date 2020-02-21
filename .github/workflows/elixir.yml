@@ -33,12 +33,7 @@ jobs:
       run: mix deps.get
 
     - name: Setup ElasticSearch
-      uses: getong/elasticsearch-action@v1
-      with:
-        # Version of elasticsearch to use
-        host port: 9200
-        container port: 9200
-        elasticsearch version: ${{matrix.elasticsearch_version}}
+      run: docker run -p 9200:9200 elasticsearch:${{matrix.elasticsearch_version}}
 
     - name: Sleepy Time (Wait for Elastic Search to boot up)
       run: |
