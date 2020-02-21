@@ -36,6 +36,8 @@ jobs:
       uses: getong/elasticsearch-action@v1
       with:
         # Version of elasticsearch to use
+        host port: 9200
+        container port: 9200
         elasticsearch version: ${{matrix.elasticsearch_version}}
 
     - name: Sleepy Time (Wait for Elastic Search to boot up)
