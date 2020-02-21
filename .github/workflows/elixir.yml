@@ -39,7 +39,9 @@ jobs:
         elasticsearch version: ${{matrix.elasticsearch_version}}
 
     - name: Sleepy Time (Wait for Elastic Search to boot up)
-      run: sleep 10
+      run:
+        - git clone https://github.com/vishnubob/wait-for-it
+        - ./wait-for-it/wait-for-it.sh localhost:9200
 
     - name: Run Tests
       run: mix test --include integration
