@@ -51,7 +51,7 @@ defmodule Elastic.Index do
   """
 
   def create(index, parameters) do
-    HTTP.post(name(index), body: parameters)
+    HTTP.put(name(index), body: parameters)
   end
 
   @doc """
@@ -69,7 +69,7 @@ defmodule Elastic.Index do
 
   """
   def delete(index) do
-    index |> name |> HTTP.delete
+    index |> name |> HTTP.delete()
   end
 
   @doc """
@@ -84,7 +84,7 @@ defmodule Elastic.Index do
   The index name will be automatically prefixed as per this package's configuration.
   """
   def exists?(index) do
-    {_, status, _} = index |> name |> HTTP.head
+    {_, status, _} = index |> name |> HTTP.head()
     status == 200
   end
 
