@@ -29,7 +29,7 @@ defmodule Elastic.Integration.IndexTest do
 
   @tag integration: true
   test "create/2" do
-    result_create = Index.create("index_test_create", %{ mappings: %{}})
+    result_create = Index.create("index_test_create", %{mappings: %{}})
 
     assert {:ok, 200, _} = result_create
   end
