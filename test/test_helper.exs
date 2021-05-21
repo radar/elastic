@@ -5,7 +5,7 @@ defmodule Answer do
   @es_index "answer"
   use Elastic.Document.API
 
-  defstruct [:id, :text, :comments]
+  defstruct [:id, :index, :text, :comments]
 end
 
 defmodule Question do
@@ -13,7 +13,7 @@ defmodule Question do
   @es_index "N/A"
   use Elastic.Document.API
 
-  defstruct [:id, :text, :comments]
+  defstruct [:id, :index, :text, :comments]
 end
 
 defmodule ElasticTestUtil do
