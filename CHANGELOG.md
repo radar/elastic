@@ -1,5 +1,9 @@
 # Elastic Changelog
 
+## 3.6.0
+
+Added a new `index` field to structs - if available - #38
+
 ## 3.5.0
 
 Switched to passing authorization headers, rather than parameters, through to AWS (for AWS Signature v4). It seemed that AWS was passing these parameters through to Elastic Search, which was causing issues. See #23 for the original issue, and #24 for the fix.
