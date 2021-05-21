@@ -1,6 +1,6 @@
 # Elastic Changelog
 
-## 3.6.1
+## 3.7.0
 
 Added a new `index` field to structs - if available - #38
 
