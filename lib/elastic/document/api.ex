@@ -11,7 +11,7 @@ defmodule Elastic.Document.API do
     @es_index "answer"
     use Elastic.Document.API
 
-    defstruct id: nil, index: nil, text: []
+    defstruct id: nil, text: []
   end
   ```
 
@@ -58,7 +58,7 @@ defmodule Elastic.Document.API do
 
   ```
   [
-    %Answer{id: 1, index: "answer", text: "This is an answer"},
+    %Answer{id: 1, text: "This is an answer"},
     ...
   ]
   ```
@@ -111,7 +111,7 @@ defmodule Elastic.Document.API do
   This will return an Answer struct:
 
   ```elixir
-  %Answer{id: 1, index: "answer", text: "This is an answer"}
+  %Answer{id: 1, text: "This is an answer"}
   ```
 
   ## Raw Get
@@ -166,8 +166,8 @@ defmodule Elastic.Document.API do
 
       def get(id, es_index \\ @es_index) do
         case raw_get(id, es_index) do
-          {:ok, 200, %{"_source" => source, "_id" => id, "_index" => index}} ->
-            into_struct(id, index, source)
+          {:ok, 200, %{"_source" => source, "_id" => id}} ->
+            into_struct(id, source)
 
           {:error, 404, %{"found" => false}} ->
             nil
@@ -189,8 +189,8 @@ defmodule Elastic.Document.API do
         result = Query.build(es_index, query) |> Index.search()
         {:ok, 200, %{"hits" => %{"hits" => hits}}} = result
 
-        Enum.map(hits, fn %{"_source" => source, "_id" => id, "_index" => index} ->
-          into_struct(id, index, source)
+        Enum.map(hits, fn %{"_source" => source, "_id" => id} ->
+          into_struct(id, source)
         end)
       end
 
@@ -215,14 +215,9 @@ defmodule Elastic.Document.API do
         Index.exists?(@es_index)
       end
 
-      defp into_struct(id, index, source) do
+      defp into_struct(id, source) do
         item = for {key, value} <- source, into: %{}, do: {String.to_atom(key), value}
-        struct(
-          __MODULE__, 
-          item
-          |> Map.put(:id, id)
-          |> Map.put(:index, index)
-        )
+        struct(__MODULE__, Map.put(item, :id, id))
       end
     end
   end

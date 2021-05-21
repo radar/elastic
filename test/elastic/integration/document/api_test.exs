@@ -6,7 +6,7 @@ defmodule Elastic.Document.APITest do
   test "puts + gets a document from the index" do
     Answer.index(1, %{text: "Hello world!"})
     answer = Answer.get(1)
-    assert answer == %Answer{id: "1", index: "elastic_test_answer", text: "Hello world!"}
+    assert answer == %Answer{id: "1", text: "Hello world!"}
   end
 
   @tag integration: true
@@ -14,7 +14,7 @@ defmodule Elastic.Document.APITest do
     Answer.index(1, %{text: "Hello world!"})
     {:ok, 200, _} = Answer.update(1, %{comments: 5})
     answer = Answer.get(1)
-    assert answer == %Answer{id: "1", index: "elastic_test_answer", text: "Hello world!", comments: 5}
+    assert answer == %Answer{id: "1", text: "Hello world!", comments: 5}
   end
 
   @tag integration: true
@@ -68,7 +68,7 @@ defmodule Elastic.Document.APITest do
         }
       })
 
-    assert answers == [%Answer{id: "1", index: "elastic_test_answer", text: "Hello world!"}]
+    assert answers == [%Answer{id: "1", text: "Hello world!"}]
   end
 
   @tag integration: true
@@ -86,7 +86,7 @@ defmodule Elastic.Document.APITest do
         "question"
       )
 
-    assert questions == [%Question{id: "2", index: "elastic_test_question", text: "Goodbye world?"}]
+    assert questions == [%Question{id: "2", text: "Goodbye world?"}]
   end
 
   @tag integration: true
@@ -111,7 +111,7 @@ defmodule Elastic.Document.APITest do
   test "puts + gets a document from explicit index" do
     Question.index(1, %{text: "Hello world!"}, "some_index")
     answer = Question.get(1, "some_index")
-    assert answer == %Question{id: "1", index: "elastic_test_some_index", text: "Hello world!"}
+    assert answer == %Question{id: "1", text: "Hello world!"}
   end
 
   @tag integration: true
@@ -119,7 +119,7 @@ defmodule Elastic.Document.APITest do
     Question.index(1, %{text: "Hello world!"}, "some_index")
     {:ok, 200, _} = Question.update(1, %{comments: 5}, "some_index")
     answer = Question.get(1, "some_index")
-    assert answer == %Question{id: "1", index: "elastic_test_some_index", text: "Hello world!", comments: 5}
+    assert answer == %Question{id: "1", text: "Hello world!", comments: 5}
   end
 
   @tag integration: true
