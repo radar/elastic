@@ -11,7 +11,7 @@ defmodule Elastic.Document.API do
     @es_index "answer"
     use Elastic.Document.API
 
-    defstruct id: nil, text: []
+    defstruct id: nil, index: nil, text: []
   end
   ```
 
@@ -58,7 +58,7 @@ defmodule Elastic.Document.API do
 
   ```
   [
-    %Answer{id: 1, text: "This is an answer"},
+    %Answer{id: 1, index: "answer", text: "This is an answer"},
     ...
   ]
   ```
@@ -111,7 +111,7 @@ defmodule Elastic.Document.API do
   This will return an Answer struct:
 
   ```elixir
-  %Answer{id: 1, text: "This is an answer"}
+  %Answer{id: 1, index: "answer", text: "This is an answer"}
   ```
 
   ## Raw Get
