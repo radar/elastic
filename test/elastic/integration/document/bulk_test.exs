@@ -9,7 +9,7 @@ defmodule Elastic.Document.BulkTest do
     ])
 
     answer = Answer.get(1)
-    assert answer == %Answer{id: "1", index: "elastic_test_answer", text: "this is an answer"}
+    assert answer == %Answer{id: "1", text: "this is an answer"}
     assert Answer.get(2)
   end
 
@@ -63,7 +63,7 @@ defmodule Elastic.Document.BulkTest do
       ])
 
     answer = Answer.get(1)
-    assert answer == %Answer{id: "1", index: "elastic_test_answer", text: "this is an answer", comments: 5}
+    assert answer == %Answer{id: "1", text: "this is an answer", comments: 5}
   end
 
   def index do

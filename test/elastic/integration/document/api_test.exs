@@ -6,7 +6,7 @@ defmodule Elastic.Document.APITest do
   test "puts + gets a document from the index" do
     Answer.index(1, %{text: "Hello world!"})
     answer = Answer.get(1)
-    assert answer == %Answer{id: "1", index: "elastic_test_answer", text: "Hello world!"}
+    assert answer == %Answer{id: "1", text: "Hello world!"}
   end
 
   @tag integration: true
@@ -14,7 +14,7 @@ defmodule Elastic.Document.APITest do
     Answer.index(1, %{text: "Hello world!"})
     {:ok, 200, _} = Answer.update(1, %{comments: 5})
     answer = Answer.get(1)
-    assert answer == %Answer{id: "1", index: "elastic_test_answer", text: "Hello world!", comments: 5}
+    assert answer == %Answer{id: "1", text: "Hello world!", comments: 5}
   end
 
   @tag integration: true
@@ -68,7 +68,7 @@ defmodule Elastic.Document.APITest do
         }
       })
 
-    assert answers == [%Answer{id: "1", index: "elastic_test_answer", text: "Hello world!"}]
+    assert answers == [%Answer{id: "1", text: "Hello world!"}]
   end
 
   @tag integration: true
